@@ -153,6 +153,9 @@ class ViewPagerAndroid extends React.Component<{
     }
   }
 
+  componentWillUnmount () {
+    this.isUnmount = true
+  }
   getInnerViewNode = (): ReactComponent => {
     return this.refs[VIEWPAGER_REF].getInnerViewNode();
   };
@@ -214,11 +217,13 @@ class ViewPagerAndroid extends React.Component<{
    * The transition between pages will be animated.
    */
   setPage = (selectedPage: number) => {
+    if (!this.isUnmount) {
     UIManager.dispatchViewManagerCommand(
       ReactNative.findNodeHandle(this),
       UIManager.AndroidViewPager.Commands.setPage,
       [selectedPage],
     );
+    }
   };
 
   /**
@@ -226,11 +231,13 @@ class ViewPagerAndroid extends React.Component<{
    * The transition between pages will *not* be animated.
    */
   setPageWithoutAnimation = (selectedPage: number) => {
+    if (!this.isUnmount) {
     UIManager.dispatchViewManagerCommand(
       ReactNative.findNodeHandle(this),
       UIManager.AndroidViewPager.Commands.setPageWithoutAnimation,
       [selectedPage],
     );
+    }
   };
 
   render() {

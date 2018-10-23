@@ -57,7 +57,7 @@ RCT_EXPORT_MODULE()
 - (void)setUp
 {
     // Set defaults
-    _maxConcurrentLoadingTasks = _maxConcurrentLoadingTasks ?: 4;
+    _maxConcurrentLoadingTasks = _maxConcurrentLoadingTasks ?: 8;
     _maxConcurrentDecodingTasks = _maxConcurrentDecodingTasks ?: 2;
     _maxConcurrentDecodingBytes = _maxConcurrentDecodingBytes ?: 30 * 1024 * 1024; // 30MB
 
@@ -770,23 +770,23 @@ static UIImage *RCTResizeImageIfNeeded(UIImage *image,
     // but we'd have to run the logic both in RCTPhotoLibraryImageLoader and
     // RCTAssetsLibraryRequestHandler. Once we drop iOS7 though, we'd drop
     // RCTAssetsLibraryRequestHandler and can move it there.
-    static NSRegularExpression *videoRegex = nil;
-    if (!videoRegex) {
-      NSError *error = nil;
-      videoRegex = [NSRegularExpression regularExpressionWithPattern:@"(?:&|^)ext=MOV(?:&|$)"
-                                                             options:NSRegularExpressionCaseInsensitive
-                                                               error:&error];
-      if (error) {
-        RCTLogError(@"%@", error);
-      }
-    }
+//    static NSRegularExpression *videoRegex = nil;
+//    if (!videoRegex) {
+//      NSError *error = nil;
+//      videoRegex = [NSRegularExpression regularExpressionWithPattern:@"(?:&|^)ext=MOV(?:&|$)"
+//                                                             options:NSRegularExpressionCaseInsensitive
+//                                                               error:&error];
+//      if (error) {
+//        RCTLogError(@"%@", error);
+//      }
+//    }
 
-    NSString *query = requestURL.query;
-    if (query != nil && [videoRegex firstMatchInString:query
-                                               options:0
-                                                 range:NSMakeRange(0, query.length)]) {
-      return NO;
-    }
+//    NSString *query = requestURL.query;
+//    if (query != nil && [videoRegex firstMatchInString:query
+//                                               options:0
+//                                                 range:NSMakeRange(0, query.length)]) {
+//      return NO;
+//    }
 
     for (id<RCTImageURLLoader> loader in _loaders) {
         // Don't use RCTImageURLLoader protocol for modules that already conform to

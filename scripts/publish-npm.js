@@ -110,10 +110,11 @@ artifacts.forEach((name) => {
 
 if (releaseVersion.indexOf('-rc') === -1) {
   // release, package will be installed by default
-  exec('npm publish --access public --verbose');
+  // exec('npm publish --access public --verbose');
+  exec('npm pack --verbose');
 } else {
   // RC release, package will be installed only if users specifically do it
-  exec('npm publish --tag next');
+  exec('npm pack --verbose');
 }
 
 echo(`Published to npm ${releaseVersion}`);

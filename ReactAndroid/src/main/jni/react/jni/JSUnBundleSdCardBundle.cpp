@@ -14,10 +14,6 @@
 #include <folly/Memory.h>
 #include <sys/stat.h>
 
-#include <android/log.h>
-#define APPNAME "eric-rn jni"
-#define LOGD(TAG) __android_log_print(ANDROID_LOG_DEBUG, APPNAME, TAG);
-
 const std::string MAGIC_FILE_NAME = "UNBUNDLE";
 
 namespace facebook {
@@ -50,8 +46,6 @@ bool JSUnBundleSdCardBundle::isUnbundle(const std::string& sourceURL) {
 JSUnBundleSdCardBundle::Module JSUnBundleSdCardBundle::getModule(uint32_t moduleId) const {
   // can be nullptr for default constructor.
   // FBASSERTMSGF(m_assetManager != nullptr, "Unbundle has not been initialized with an asset manager");
-  LOGD("JniJSModulesUnbundle::isUnbundle hahahhahahahahhahahh ");
-
   std::ostringstream sourceUrlBuilder;
   sourceUrlBuilder << moduleId << ".js";
   auto sourceUrl = sourceUrlBuilder.str();
@@ -60,7 +54,6 @@ JSUnBundleSdCardBundle::Module JSUnBundleSdCardBundle::getModule(uint32_t module
 
   std::ifstream ifs (fileName);
   if (ifs.good()) {
-    LOGD("JniJSModulesUnbundle::isUnbundle hahahhahah 1");
     std::filebuf* pbuf = ifs.rdbuf();
     std::size_t size = pbuf->pubseekoff(0, ifs.end, ifs.in);
     pbuf->pubseekpos (0, ifs.in);
@@ -69,7 +62,6 @@ JSUnBundleSdCardBundle::Module JSUnBundleSdCardBundle::getModule(uint32_t module
     ifs.close();
     std::string code(buffer, size);
     delete[] buffer;
-    LOGD("JniJSModulesUnbundle::isUnbundle hahahhahah 2");
     return {sourceUrl, code};
   } else {
     throw ModuleNotFound("Module not found: " + sourceUrl);

@@ -34,9 +34,7 @@ JSUnBundleSdCardBundle::JSUnBundleSdCardBundle(const std::string& moduleDirector
   m_moduleDirectory(moduleDirectory) {}
 
 bool JSUnBundleSdCardBundle::isUnbundle(const std::string& sourceURL) {
-  LOGD("JSUnBundleSdCardBundle::isUnbundle");
   auto magicFileName = jsModulesDir(sourceURL) + MAGIC_FILE_NAME;
-  __android_log_print(ANDROID_LOG_DEBUG, "eric-rn jni", "%s", magicFileName.c_str());
 
   struct stat buffer;
   // 有MAGIC_FILE_NAME就表示是unbundle包

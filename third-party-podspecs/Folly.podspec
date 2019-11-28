@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
   spec.source = { :git => 'https://github.com/facebook/folly.git',
                   :tag => "v#{spec.version}" }
   spec.module_name = 'folly'
-  spec.dependency 'boost'
+  spec.dependency 'boost-159-for-rn', '1.59.0'
   spec.dependency 'DoubleConversion'
   spec.dependency 'GLog'
   spec.compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1'

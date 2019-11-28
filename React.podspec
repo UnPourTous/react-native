@@ -125,7 +125,7 @@ Pod::Spec.new do |s|
 
   s.subspec "cxxreact" do |ss|
     ss.dependency             "React/jschelpers"
-    ss.dependency             "boost-for-react-native", "1.63.0"
+    ss.dependency             "boost-159-for-rn", "1.59.0"
     ss.dependency             "Folly", "2016.09.26.00"
     ss.compiler_flags       = folly_compiler_flags
     ss.source_files         = "ReactCommon/cxxreact/*.{cpp,h}"

@@ -28,7 +28,7 @@ Pod::Spec.new do |spec|
   spec.libraries           = "stdc++"
   spec.pod_target_xcconfig = { "USE_HEADERMAP" => "NO",
                                "CLANG_CXX_LANGUAGE_STANDARD" => "c++14",
-                               "HEADER_SEARCH_PATHS" => "\"$(PODS_TARGET_SRCROOT)\" \"$(PODS_ROOT)/boost\" \"$(PODS_ROOT)/DoubleConversion\"" }
+                               "HEADER_SEARCH_PATHS" => "\"$(PODS_TARGET_SRCROOT)\" \"$(PODS_ROOT)/boost-159-for-rn\" \"$(PODS_ROOT)/DoubleConversion\"" }
 
   # Pinning to the same version as React.podspec.
   spec.platforms = { :ios => "8.0", :tvos => "9.2" }

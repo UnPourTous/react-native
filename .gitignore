@@ -60,3 +60,4 @@ node_modules
 /third-party
 .project
 .settings/
+.classpath

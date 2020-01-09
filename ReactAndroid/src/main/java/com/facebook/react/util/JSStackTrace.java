@@ -16,7 +16,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 
 public class JSStackTrace {
-
+  private static final String LINE_NUMBER_KEY = "lineNumber";
   final private static Pattern mJsModuleIdPattern = Pattern.compile("(?:^|[/\\\\])(\\d+\\.js)$");
 
   public static String format(String message, ReadableArray stack) {
@@ -26,8 +26,16 @@ public class JSStackTrace {
       stringBuilder
         .append(frame.getString("methodName"))
         .append("@")
-        .append(stackFrameToModuleId(frame))
-        .append(frame.getInt("lineNumber"));
+        .append(stackFrameToModuleId(frame));
+
+      if (frame.hasKey(LINE_NUMBER_KEY) &&
+        !frame.isNull(LINE_NUMBER_KEY) &&
+        frame.getType(LINE_NUMBER_KEY) == ReadableType.Number) {
+        stringBuilder.append(frame.getInt(LINE_NUMBER_KEY));
+      } else {
+        stringBuilder.append(-1);
+      }
+
       if (frame.hasKey("column") &&
         !frame.isNull("column") &&
         frame.getType("column") == ReadableType.Number) {

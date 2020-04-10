@@ -72,7 +72,10 @@ continueUserActivity:(NSUserActivity *)userActivity
   restorationHandler:(void (^)(NSArray *))restorationHandler
 {
   if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb]) {
-    NSDictionary *payload = @{@"url": userActivity.webpageURL.absoluteString};
+    NSDictionary *payload = @{
+        @"url": userActivity.webpageURL.absoluteString,
+        @"userActivity": userActivity
+    };
     [[NSNotificationCenter defaultCenter] postNotificationName:kOpenURLNotification
                                                         object:self
                                                       userInfo:payload];

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -9,7 +9,7 @@
  * @format
  */
 
-/* eslint-disable no-shadow, eqeqeq, curly, no-unused-vars, no-void */
+/* eslint-disable no-shadow, eqeqeq, curly, no-unused-vars, no-void, no-control-regex  */
 
 /**
  * This pipes all of our console logging functions to native logging so that
@@ -42,6 +42,7 @@ const inspect = (function() {
   function inspect(obj, opts) {
     var ctx = {
       seen: [],
+      formatValueCalls: 0,
       stylize: stylizeNoColor,
     };
     return formatValue(ctx, obj, opts.depth);
@@ -62,6 +63,13 @@ const inspect = (function() {
   }
 
   function formatValue(ctx, value, recurseTimes) {
+    ctx.formatValueCalls++;
+    if (ctx.formatValueCalls > 200) {
+      return `[TOO BIG formatValueCalls ${
+        ctx.formatValueCalls
+      } exceeded limit of 200]`;
+    }
+
     // Primitive types cannot have properties
     var primitive = formatPrimitive(ctx, value);
     if (primitive) {
@@ -361,17 +369,6 @@ const inspect = (function() {
     return typeof arg === 'function';
   }
 
-  function isPrimitive(arg) {
-    return (
-      arg === null ||
-      typeof arg === 'boolean' ||
-      typeof arg === 'number' ||
-      typeof arg === 'string' ||
-      typeof arg === 'symbol' || // ES6 symbol
-      typeof arg === 'undefined'
-    );
-  }
-
   function objectToString(o) {
     return Object.prototype.toString.call(o);
   }
@@ -413,8 +410,20 @@ function getNativeLogFunction(level) {
         .join(', ');
     }
 
+    // TRICKY
+    // If more than one argument is provided, the code above collapses them all
+    // into a single formatted string. This transform wraps string arguments in
+    // single quotes (e.g. "foo" -> "'foo'") which then breaks the "Warning:"
+    // check below. So it's important that we look at the first argument, rather
+    // than the formatted argument string.
+    const firstArg = arguments[0];
+
     let logLevel = level;
-    if (str.slice(0, 9) === 'Warning: ' && logLevel >= LOG_LEVELS.error) {
+    if (
+      typeof firstArg === 'string' &&
+      firstArg.slice(0, 9) === 'Warning: ' &&
+      logLevel >= LOG_LEVELS.error
+    ) {
       // React warnings use console.error so that a stack trace is shown,
       // but we don't (currently) want these to show a redbox
       // (Note: Logic duplicated in ExceptionsManager.js.)
@@ -427,6 +436,9 @@ function getNativeLogFunction(level) {
         [].slice.call(arguments),
         INSPECTOR_FRAMES_TO_SKIP,
       );
+    }
+    if (groupStack.length) {
+      str = groupFormat('', str);
     }
     global.nativeLoggingHook(str, logLevel);
   };
@@ -501,8 +513,48 @@ function consoleTablePolyfill(rows) {
   global.nativeLoggingHook('\n' + table.join('\n'), LOG_LEVELS.info);
 }
 
+const GROUP_PAD = '\u2502'; // Box light vertical
+const GROUP_OPEN = '\u2510'; // Box light down+left
+const GROUP_CLOSE = '\u2518'; // Box light up+left
+
+const groupStack = [];
+
+function groupFormat(prefix, msg) {
+  // Insert group formatting before the console message
+  return groupStack.join('') + prefix + ' ' + (msg || '');
+}
+
+function consoleGroupPolyfill(label) {
+  global.nativeLoggingHook(groupFormat(GROUP_OPEN, label), LOG_LEVELS.info);
+  groupStack.push(GROUP_PAD);
+}
+
+function consoleGroupCollapsedPolyfill(label) {
+  global.nativeLoggingHook(groupFormat(GROUP_CLOSE, label), LOG_LEVELS.info);
+  groupStack.push(GROUP_PAD);
+}
+
+function consoleGroupEndPolyfill() {
+  groupStack.pop();
+  global.nativeLoggingHook(groupFormat(GROUP_CLOSE), LOG_LEVELS.info);
+}
+
+function consoleAssertPolyfill(expression, label) {
+  if (!expression) {
+    global.nativeLoggingHook('Assertion failed: ' + label, LOG_LEVELS.error);
+  }
+}
+
 if (global.nativeLoggingHook) {
   const originalConsole = global.console;
+  // Preserve the original `console` as `originalConsole`
+  if (__DEV__ && originalConsole) {
+    const descriptor = Object.getOwnPropertyDescriptor(global, 'console');
+    if (descriptor) {
+      Object.defineProperty(global, 'originalConsole', descriptor);
+    }
+  }
+
   global.console = {
     error: getNativeLogFunction(LOG_LEVELS.error),
     info: getNativeLogFunction(LOG_LEVELS.info),
@@ -511,37 +563,79 @@ if (global.nativeLoggingHook) {
     trace: getNativeLogFunction(LOG_LEVELS.trace),
     debug: getNativeLogFunction(LOG_LEVELS.trace),
     table: consoleTablePolyfill,
+    group: consoleGroupPolyfill,
+    groupEnd: consoleGroupEndPolyfill,
+    groupCollapsed: consoleGroupCollapsedPolyfill,
+    assert: consoleAssertPolyfill,
   };
+
+  Object.defineProperty(console, '_isPolyfilled', {
+    value: true,
+    enumerable: false,
+  });
 
   // If available, also call the original `console` method since that is
   // sometimes useful. Ex: on OS X, this will let you see rich output in
   // the Safari Web Inspector console.
   if (__DEV__ && originalConsole) {
-    // Preserve the original `console` as `originalConsole`
-    const descriptor = Object.getOwnPropertyDescriptor(global, 'console');
-    if (descriptor) {
-      Object.defineProperty(global, 'originalConsole', descriptor);
-    }
-
     Object.keys(console).forEach(methodName => {
       const reactNativeMethod = console[methodName];
       if (originalConsole[methodName]) {
         console[methodName] = function() {
-          originalConsole[methodName](...arguments);
+          // TODO(T43930203): remove this special case once originalConsole.assert properly checks
+          // the condition
+          if (methodName === 'assert') {
+            if (!arguments[0]) {
+              originalConsole.assert(...arguments);
+            }
+          } else {
+            originalConsole[methodName](...arguments);
+          }
           reactNativeMethod.apply(console, arguments);
+        };
+      }
+    });
+
+    // The following methods are not supported by this polyfill but
+    // we still should pass them to original console if they are
+    // supported by it.
+    ['clear', 'dir', 'dirxml', 'profile', 'profileEnd'].forEach(methodName => {
+      if (typeof originalConsole[methodName] === 'function') {
+        console[methodName] = function() {
+          originalConsole[methodName](...arguments);
         };
       }
     });
   }
 } else if (!global.console) {
-  const log = global.print || function consoleLoggingStub() {};
+  function stub() {}
+  const log = global.print || stub;
+
   global.console = {
+    debug: log,
     error: log,
     info: log,
     log: log,
-    warn: log,
     trace: log,
-    debug: log,
-    table: log,
+    warn: log,
+    assert(expression, label) {
+      if (!expression) {
+        log('Assertion failed: ' + label);
+      }
+    },
+    clear: stub,
+    dir: stub,
+    dirxml: stub,
+    group: stub,
+    groupCollapsed: stub,
+    groupEnd: stub,
+    profile: stub,
+    profileEnd: stub,
+    table: stub,
   };
+
+  Object.defineProperty(console, '_isPolyfilled', {
+    value: true,
+    enumerable: false,
+  });
 }

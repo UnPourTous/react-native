@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
+/*
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -14,24 +14,30 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Default implementation of RCTComponentViewProtocol.
  */
-@interface UIView (ComponentViewProtocol)
+@interface UIView (ComponentViewProtocol) <RCTComponentViewProtocol>
 
-- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView
-                          index:(NSInteger)index;
++ (std::vector<facebook::react::ComponentDescriptorProvider>)supplementalComponentDescriptorProviders;
 
-- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView
-                            index:(NSInteger)index;
+- (void)mountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index;
 
-- (void)updateProps:(facebook::react::SharedProps)props
-           oldProps:(facebook::react::SharedProps)oldProps;
+- (void)unmountChildComponentView:(UIView<RCTComponentViewProtocol> *)childComponentView index:(NSInteger)index;
 
-- (void)updateLocalData:(facebook::react::SharedLocalData)localData
-           oldLocalData:(facebook::react::SharedLocalData)oldLocalData;
+- (void)updateProps:(facebook::react::Props::Shared const &)props
+           oldProps:(facebook::react::Props::Shared const &)oldProps;
 
-- (void)updateLayoutMetrics:(facebook::react::LayoutMetrics)layoutMetrics
-           oldLayoutMetrics:(facebook::react::LayoutMetrics)oldLayoutMetrics;
+- (void)updateEventEmitter:(facebook::react::EventEmitter::Shared const &)eventEmitter;
+
+- (void)updateState:(facebook::react::State::Shared const &)state
+           oldState:(facebook::react::State::Shared const &)oldState;
+
+- (void)updateLayoutMetrics:(facebook::react::LayoutMetrics const &)layoutMetrics
+           oldLayoutMetrics:(facebook::react::LayoutMetrics const &)oldLayoutMetrics;
+
+- (void)finalizeUpdates:(RNComponentViewUpdateMask)updateMask;
 
 - (void)prepareForRecycle;
+
+- (facebook::react::SharedProps)props;
 
 @end
 

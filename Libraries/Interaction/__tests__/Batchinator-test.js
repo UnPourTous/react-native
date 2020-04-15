@@ -1,24 +1,25 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
+ * @format
  * @emails oncall+react_native
  */
 
 'use strict';
 
 jest
-  .mock('ErrorUtils')
-  .mock('BatchedBridge');
+  .mock('../../vendor/core/ErrorUtils')
+  .mock('../../BatchedBridge/BatchedBridge');
 
 function expectToBeCalledOnce(fn) {
   expect(fn.mock.calls.length).toBe(1);
 }
 
 describe('Batchinator', () => {
-  const Batchinator = require('Batchinator');
+  const Batchinator = require('../Batchinator');
 
   it('executes vanilla tasks', () => {
     const callback = jest.fn();

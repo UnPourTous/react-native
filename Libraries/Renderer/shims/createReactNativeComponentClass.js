@@ -1,18 +1,20 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @providesModule createReactNativeComponentClass
- * @flow
+ * @format
+ * @flow strict-local
  */
 
 'use strict';
 
+import {ReactNativeViewConfigRegistry} from 'react-native/Libraries/ReactPrivate/ReactNativePrivateInterface';
+
 import type {ViewConfigGetter} from './ReactNativeTypes';
 
-const {register} = require('ReactNativeViewConfigRegistry');
+const {register} = ReactNativeViewConfigRegistry;
 
 /**
  * Creates a renderable ReactNative host component.

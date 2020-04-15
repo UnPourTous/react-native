@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
+/*
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -9,57 +9,59 @@
 
 #include <memory>
 
-#include <fabric/core/ConcreteComponentDescriptor.h>
-#include <fabric/core/ConcreteShadowNode.h>
-#include <fabric/core/LocalData.h>
-#include <fabric/core/ShadowNode.h>
+#include <folly/dynamic.h>
+#include <react/components/view/ConcreteViewShadowNode.h>
+#include <react/components/view/ViewEventEmitter.h>
+#include <react/components/view/ViewProps.h>
+#include <react/core/ConcreteComponentDescriptor.h>
+#include <react/core/RawProps.h>
+#include <react/core/ShadowNode.h>
 
 using namespace facebook::react;
 
 /**
- * This defines a set of TestComponent classes: Props, ShadowNode, ComponentDescriptor.
- * To be used for testing purpose.
+ * This defines a set of TestComponent classes: Props, ShadowNode,
+ * ComponentDescriptor. To be used for testing purpose.
  */
 
-class TestLocalData: public LocalData {
-public:
-  void setNumber(const int &number) {
-    number_ = number;
-  }
-
-  int getNumber() const {
-    return number_;
-  }
-
-private:
-  int number_ {0};
+class TestState {
+ public:
+  int number;
 };
 
-class TestProps : public Props {
-public:
-  TestProps() {
-    RawProps raw;
-    raw["nativeID"] = "testNativeID";
-    apply(raw);
-  }
+static const char TestComponentName[] = "Test";
+
+class TestProps : public ViewProps {
+ public:
+  using ViewProps::ViewProps;
+
+  TestProps(const TestProps &sourceProps, const RawProps &rawProps)
+      : ViewProps(sourceProps, rawProps) {}
 };
+
 using SharedTestProps = std::shared_ptr<const TestProps>;
 
 class TestShadowNode;
-using SharedTestShadowNode = std::shared_ptr<const TestShadowNode>;
-class TestShadowNode : public ConcreteShadowNode<TestProps> {
-public:
-  using ConcreteShadowNode::ConcreteShadowNode;
 
-  ComponentName getComponentName() const override {
-    return ComponentName("Test");
+using SharedTestShadowNode = std::shared_ptr<const TestShadowNode>;
+
+class TestShadowNode : public ConcreteViewShadowNode<
+                           TestComponentName,
+                           TestProps,
+                           ViewEventEmitter,
+                           TestState> {
+ public:
+  using ConcreteViewShadowNode::ConcreteViewShadowNode;
+
+  Transform _transform{Transform::Identity()};
+
+  Transform getTransform() const override {
+    return _transform;
   }
 };
 
-class TestComponentDescriptor: public ConcreteComponentDescriptor<TestShadowNode> {
-public:
-  // TODO (shergin): Why does this gets repeated here and the shadow node class?
-  ComponentName getComponentName() const override {
-    return "Test";
-  }
+class TestComponentDescriptor
+    : public ConcreteComponentDescriptor<TestShadowNode> {
+ public:
+  using ConcreteComponentDescriptor::ConcreteComponentDescriptor;
 };

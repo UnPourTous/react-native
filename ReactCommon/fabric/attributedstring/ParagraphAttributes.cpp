@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
+/*
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -7,31 +7,46 @@
 
 #include "ParagraphAttributes.h"
 
-#include <fabric/attributedstring/textValuesConversions.h>
-#include <fabric/debug/DebugStringConvertibleItem.h>
+#include <react/attributedstring/conversions.h>
+#include <react/debug/debugStringConvertibleUtils.h>
+#include <react/graphics/conversions.h>
+#include <react/utils/FloatComparison.h>
 
 namespace facebook {
 namespace react {
 
+bool ParagraphAttributes::operator==(const ParagraphAttributes &rhs) const {
+  return std::tie(
+             maximumNumberOfLines,
+             ellipsizeMode,
+             textBreakStrategy,
+             adjustsFontSizeToFit) ==
+      std::tie(
+             rhs.maximumNumberOfLines,
+             rhs.ellipsizeMode,
+             rhs.textBreakStrategy,
+             rhs.adjustsFontSizeToFit) &&
+      floatEquality(minimumFontSize, rhs.minimumFontSize) &&
+      floatEquality(maximumFontSize, rhs.maximumFontSize);
+}
+
+bool ParagraphAttributes::operator!=(const ParagraphAttributes &rhs) const {
+  return !(*this == rhs);
+}
+
 #pragma mark - DebugStringConvertible
 
+#if RN_DEBUG_STRING_CONVERTIBLE
 SharedDebugStringConvertibleList ParagraphAttributes::getDebugProps() const {
-  ParagraphAttributes defaultParagraphAttributes = {};
-  SharedDebugStringConvertibleList list = {};
-
-#define PARAGRAPH_ATTRIBUTE(stringName, propertyName, accessor, convertor) \
-  if (propertyName != defaultParagraphAttributes.propertyName) { \
-    list.push_back(std::make_shared<DebugStringConvertibleItem>(#stringName, convertor(propertyName accessor))); \
-  }
-
-  PARAGRAPH_ATTRIBUTE(maximumNumberOfLines, maximumNumberOfLines, , std::to_string)
-  PARAGRAPH_ATTRIBUTE(ellipsizeMode, ellipsizeMode, , stringFromEllipsizeMode)
-  PARAGRAPH_ATTRIBUTE(adjustsFontSizeToFit, adjustsFontSizeToFit, , std::to_string)
-  PARAGRAPH_ATTRIBUTE(minimumFontSize, minimumFontSize, , std::to_string)
-  PARAGRAPH_ATTRIBUTE(maximumFontSize, maximumFontSize, , std::to_string)
-
-  return list;
+  return {
+      debugStringConvertibleItem("maximumNumberOfLines", maximumNumberOfLines),
+      debugStringConvertibleItem("ellipsizeMode", ellipsizeMode),
+      debugStringConvertibleItem("textBreakStrategy", textBreakStrategy),
+      debugStringConvertibleItem("adjustsFontSizeToFit", adjustsFontSizeToFit),
+      debugStringConvertibleItem("minimumFontSize", minimumFontSize),
+      debugStringConvertibleItem("maximumFontSize", maximumFontSize)};
 }
+#endif
 
 } // namespace react
 } // namespace facebook

@@ -119,7 +119,17 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
 
   @ReactProp(name = PROP_ACCESSIBILITY_ROLE)
   public void setAccessibilityRole(T view, String accessibilityRole) {
-    AccessibilityRoleUtil.updateAccessibilityRole(view, accessibilityRole);
+    if (accessibilityRole == null) {
+      return;
+    }
+    try {
+     AccessibilityDelegateUtil.AccessibilityRole.valueOf(accessibilityRole.toUpperCase());
+    } catch (NullPointerException e) {
+      throw new IllegalArgumentException("Invalid Role " + accessibilityRole + " Passed In");
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException("Invalid Role " + accessibilityRole + " Passed In");
+    }
+    view.setTag(R.id.accessibility_role, accessibilityRole);
   }
 
   @ReactProp(name = PROP_ACCESSIBILITY_STATES)
@@ -236,5 +246,15 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
     view.setScaleX(1);
     view.setScaleY(1);
     view.setCameraDistance(0);
+  }
+
+  private void updateViewAccessibility(T view) {
+    AccessibilityDelegateUtil.setDelegate(view);
+  }
+
+  @Override
+  protected void onAfterUpdateTransaction(T view) {
+    super.onAfterUpdateTransaction(view);
+    updateViewAccessibility(view);
   }
 }

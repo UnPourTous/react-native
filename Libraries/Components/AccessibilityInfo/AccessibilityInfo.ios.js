@@ -130,7 +130,9 @@ var AccessibilityInfo = {
   },
 
   /**
-   * iOS-Only. Set accessibility focus to a react component.
+   * Post a string to be announced by the screen reader.
+   *
+   * See http://facebook.github.io/react-native/docs/accessibilityinfo.html#announceforaccessibility
    */
   setAccessibilityFocus: function(
     reactTag: number

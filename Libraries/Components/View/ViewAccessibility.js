@@ -50,7 +50,9 @@ export type AccessibilityRole =
   | 'keyboardkey'
   | 'text'
   | 'adjustable'
-  | 'imagebutton';
+  | 'imagebutton'
+  | 'header'
+  | 'summary';
 
 export type CurrentViewState = 'selected' | 'disabled';
 
@@ -99,6 +101,8 @@ module.exports = {
     'text',
     'adjustable',
     'imagebutton',
+    'header',
+    'summary',
   ],
   CurrentViewStates: ['selected', 'disabled'],
 };

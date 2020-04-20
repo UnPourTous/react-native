@@ -49,11 +49,13 @@ export type ViewLayoutEvent = {
 export type ViewProps = {
   accessible?: bool,
   accessibilityLabel?: React$PropType$Primitive<any>,
+  accessibilityActions?: Array<string>,
   accessibilityComponentType?: AccessibilityComponentType,
   accessibilityLiveRegion?: 'none' | 'polite' | 'assertive',
   importantForAccessibility?: 'auto'| 'yes'| 'no'| 'no-hide-descendants',
   accessibilityTraits?: AccessibilityTrait | Array<AccessibilityTrait>,
   accessibilityViewIsModal?: bool,
+  onAccessibilityAction?: Function,
   onAccessibilityTap?: Function,
   onMagicTap?: Function,
   testID?: string,
@@ -94,6 +96,13 @@ module.exports = {
    * children and accumulating all the `Text` nodes separated by space.
    */
   accessibilityLabel: PropTypes.node,
+
+  /**
+   * Provides an array of custom actions available for accessibility.
+   *
+   * @platform ios
+   */
+  accessibilityActions: PropTypes.arrayOf(PropTypes.string),
 
   /**
    * Indicates to accessibility services to treat UI component like a
@@ -211,6 +220,14 @@ module.exports = {
    * @platform ios
    */
   accessibilityViewIsModal: PropTypes.bool,
+
+  /**
+   * When `accessible` is true, the system will try to invoke this function
+   * when the user performs an accessibility custom action.
+   *
+   * @platform ios
+   */
+  onAccessibilityAction: PropTypes.func,
 
   /**
    * When `accessible` is true, the system will try to invoke this function

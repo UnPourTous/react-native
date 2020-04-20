@@ -67,9 +67,11 @@ public class AccessibilityDelegateUtil {
   }
 
   public static void setDelegate(final View view) {
+    final AccessibilityRole accessibilityRole = (AccessibilityRole) view.getTag(R.id.accessibility_role);
     // if a view already has an accessibility delegate, replacing it could cause problems,
     // so leave it alone.
-    if (!ViewCompat.hasAccessibilityDelegate(view)) {
+    if (!ViewCompat.hasAccessibilityDelegate(view) &&
+      accessibilityRole != null) {
       ViewCompat.setAccessibilityDelegate(
         view,
         new AccessibilityDelegateCompat() {
@@ -77,10 +79,6 @@ public class AccessibilityDelegateUtil {
           public void onInitializeAccessibilityNodeInfo(
             View host, AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
-            AccessibilityRole accessibilityRole = (AccessibilityRole) view.getTag(R.id.accessibility_role);
-            if (accessibilityRole == null) {
-              accessibilityRole = AccessibilityRole.NONE;
-            }
             setRole(info, accessibilityRole, view.getContext());
           }
         });
@@ -93,7 +91,10 @@ public class AccessibilityDelegateUtil {
 
   //TODO: Eventually support fot other languages on talkback
 
-  public static void setRole(AccessibilityNodeInfoCompat nodeInfo, final AccessibilityRole role, final Context context) {
+  public static void setRole(AccessibilityNodeInfoCompat nodeInfo, AccessibilityRole role, final Context context) {
+    if (role == null) {
+      role = AccessibilityRole.NONE;
+    }
     nodeInfo.setClassName(role.getValue());
     if (Locale.getDefault().getLanguage().equals(new Locale("en").getLanguage())) {
       if (role.equals(AccessibilityRole.LINK)) {

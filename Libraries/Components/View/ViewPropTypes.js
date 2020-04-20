@@ -53,6 +53,7 @@ export type ViewProps = {
   accessibilityComponentType?: AccessibilityComponentType,
   accessibilityLiveRegion?: 'none' | 'polite' | 'assertive',
   importantForAccessibility?: 'auto'| 'yes'| 'no'| 'no-hide-descendants',
+  accessibilityIgnoresInvertColors?: boolean,
   accessibilityTraits?: AccessibilityTrait | Array<AccessibilityTrait>,
   accessibilityViewIsModal?: bool,
   onAccessibilityAction?: Function,

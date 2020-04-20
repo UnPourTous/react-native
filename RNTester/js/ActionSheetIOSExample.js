@@ -31,7 +31,9 @@ var BUTTONS = [
 var DESTRUCTIVE_INDEX = 3;
 var CANCEL_INDEX = 4;
 
-class ActionSheetExample extends React.Component<{}, $FlowFixMeState> {
+type Props = $ReadOnly<{||}>;
+type State = {|clicked: string|};
+class ActionSheetExample extends React.Component<Props, State> {
   state = {
     clicked: 'none',
   };

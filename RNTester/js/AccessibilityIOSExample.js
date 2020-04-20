@@ -19,10 +19,13 @@ var {
   View,
 } = ReactNative;
 
-class AccessibilityIOSExample extends React.Component<{}> {
+const RNTesterBlock = require('./RNTesterBlock');
+
+type Props = $ReadOnly<{||}>;
+class AccessibilityIOSExample extends React.Component<Props> {
   render() {
     return (
-      <View>
+      <RNTesterBlock title="Accessibility iOS APIs">
         <View
           onAccessibilityTap={() => alert('onAccessibilityTap success')}
           accessible={true}>
@@ -36,82 +39,18 @@ class AccessibilityIOSExample extends React.Component<{}> {
             Accessibility magic tap example
           </Text>
         </View>
-        <View accessibilityLabel="Some announcement"
-              accessible={true}>
-          <Text>
-            Accessibility label example
-          </Text>
-        </View>
-        <View
-          accessibilityRole="button"
-          accessibilityStates={['selected']}
-          accessible={true}>
-          <Text>
-            Accessibility traits example
-          </Text>
-        </View>
-        <Text>
-          Text's accessibilityLabel is the raw text itself unless it is set explicitly.
-        </Text>
-        <Text accessibilityLabel="Test of accessibilityLabel"
-          accessible={true}>
-          This text component's accessibilityLabel is set explicitly.
-        </Text>
-      </View>
-    );
-  }
-}
-
-class ScreenReaderStatusExample extends React.Component<{}, $FlowFixMeState> {
-  state = {
-    screenReaderEnabled: false,
-  }
-
-  componentDidMount() {
-    AccessibilityInfo.addEventListener(
-      'change',
-      this._handleScreenReaderToggled
-    );
-    AccessibilityInfo.fetch().done((isEnabled) => {
-      this.setState({
-        screenReaderEnabled: isEnabled
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    AccessibilityInfo.removeEventListener(
-      'change',
-      this._handleScreenReaderToggled
-    );
-  }
-
-  _handleScreenReaderToggled = (isEnabled) => {
-    this.setState({
-      screenReaderEnabled: isEnabled,
-    });
-  }
-
-  render() {
-    return (
-      <View>
-        <Text>
-          The screen reader is {this.state.screenReaderEnabled ? 'enabled' : 'disabled'}.
-        </Text>
-      </View>
+      </RNTesterBlock>
     );
   }
 }
 
 exports.title = 'AccessibilityIOS';
-exports.description = 'Interface to show iOS\' accessibility samples';
+exports.description = 'iOS specific Accessibility APIs';
 exports.examples = [
   {
-    title: 'Accessibility elements',
-    render(): React.Element<any> { return <AccessibilityIOSExample />; }
-  },
-  {
-    title: 'Check if the screen reader is enabled',
-    render(): React.Element<any> { return <ScreenReaderStatusExample />; }
+    title: 'iOS Accessibility elements',
+    render(): React.Element<any> {
+      return <AccessibilityIOSExample />;
+    },
   },
 ];

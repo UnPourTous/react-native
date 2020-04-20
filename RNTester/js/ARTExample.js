@@ -30,7 +30,8 @@ const {
 
 var scale = Platform.isTVOS ? 4 : 1;
 
-class ARTExample extends React.Component<{}> {
+type Props = $ReadOnly<{||}>;
+class ARTExample extends React.Component<Props> {
     render(){
         const pathRect = new Path()
             .moveTo(scale * 0,scale * 0)

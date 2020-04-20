@@ -5,14 +5,13 @@
 
 package com.facebook.react.uimanager;
 
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.content.Context;
 import android.support.v4.view.AccessibilityDelegateCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.view.View;
-import android.view.accessibility.AccessibilityNodeInfo;
-import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.R;
+import java.util.Locale;
 import javax.annotation.Nullable;
 
 /**
@@ -32,7 +31,7 @@ public class AccessibilityDelegateUtil {
   public enum AccessibilityRole {
     NONE(null),
     BUTTON("android.widget.Button"),
-    LINK("android.widget.Button"),
+    LINK("android.widget.ViewGroup"),
     SEARCH("android.widget.EditText"),
     IMAGE("android.widget.ImageView"),
     IMAGEBUTTON("android.widget.ImageView"),
@@ -55,11 +54,11 @@ public class AccessibilityDelegateUtil {
 
     public static AccessibilityRole fromValue(String value) {
       for (AccessibilityRole role : AccessibilityRole.values()) {
-        if (role.getValue() != null && role.getValue().equals(value)) {
+        if (role.name().equalsIgnoreCase(value)) {
           return role;
         }
       }
-      return AccessibilityRole.NONE;
+      throw new IllegalArgumentException("Invalid accessibility role value: " + value);
     }
   }
 
@@ -78,40 +77,43 @@ public class AccessibilityDelegateUtil {
           public void onInitializeAccessibilityNodeInfo(
             View host, AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
-            AccessibilityRole accessibilityRole = getAccessibilityRole((String) view.getTag(R.id.accessibility_role));
+            AccessibilityRole accessibilityRole = (AccessibilityRole) view.getTag(R.id.accessibility_role);
+            if (accessibilityRole == null) {
+              accessibilityRole = AccessibilityRole.NONE;
+            }
             setRole(info, accessibilityRole, view.getContext());
           }
         });
     }
   }
 
-  public static void setRole(AccessibilityNodeInfoCompat nodeInfo, final AccessibilityRole role) {
+  /**
+   * Strings for setting the Role Description in english
+   */
+
+  //TODO: Eventually support fot other languages on talkback
+
+  public static void setRole(AccessibilityNodeInfoCompat nodeInfo, final AccessibilityRole role, final Context context) {
     nodeInfo.setClassName(role.getValue());
-    if (role.equals(AccessibilityRole.LINK)) {
-      nodeInfo.setRoleDescription("Link");
-    }
-    if (role.equals(AccessibilityRole.SEARCH)) {
-      nodeInfo.setRoleDescription("Search Field");
-    }
-    if (role.equals(AccessibilityRole.IMAGE)) {
-      nodeInfo.setRoleDescription("Image");
+    if (Locale.getDefault().getLanguage().equals(new Locale("en").getLanguage())) {
+      if (role.equals(AccessibilityRole.LINK)) {
+        nodeInfo.setRoleDescription(context.getString(R.string.link_description));
+      }
+      if (role.equals(AccessibilityRole.SEARCH)) {
+        nodeInfo.setRoleDescription(context.getString(R.string.search_description));
+      }
+      if (role.equals(AccessibilityRole.IMAGE)) {
+        nodeInfo.setRoleDescription(context.getString(R.string.image_description));
+      }
+      if (role.equals(AccessibilityRole.IMAGEBUTTON)) {
+        nodeInfo.setRoleDescription(context.getString(R.string.image_button_description));
+      }
+      if (role.equals(AccessibilityRole.ADJUSTABLE)) {
+        nodeInfo.setRoleDescription(context.getString(R.string.adjustable_description));
+      }
     }
     if (role.equals(AccessibilityRole.IMAGEBUTTON)) {
-      nodeInfo.setRoleDescription("Button Image");
       nodeInfo.setClickable(true);
     }
-    if (role.equals(AccessibilityRole.ADJUSTABLE)) {
-      nodeInfo.setRoleDescription("Adjustable");
-    }
-  }
-
-  /**
-   * Method for setting accessibilityRole on view properties.
-   */
-  public static AccessibilityRole getAccessibilityRole(String role) {
-    if (role == null) {
-      return AccessibilityRole.NONE;
-    }
-    return AccessibilityRole.valueOf(role.toUpperCase());
   }
 }

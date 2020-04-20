@@ -52,6 +52,12 @@ export type AccessibilityRole =
   | 'adjustable'
   | 'imagebutton';
 
+export type CurrentViewState = 'selected' | 'disabled';
+
+export type CurrentViewStates =
+  | CurrentViewState
+  | $ReadOnlyArray<CurrentViewState>;
+
 module.exports = {
   AccessibilityTraits: [
     'none',
@@ -94,4 +100,5 @@ module.exports = {
     'adjustable',
     'imagebutton',
   ],
+  CurrentViewStates: ['selected', 'disabled'],
 };

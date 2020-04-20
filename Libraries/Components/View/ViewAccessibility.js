@@ -41,6 +41,14 @@ export type AccessibilityComponentType =
   'radiobutton_checked' |
   'radiobutton_unchecked';
 
+export type AccessibilityRole =
+  | 'none'
+  | 'button'
+  | 'image'
+  | 'keyboardkey'
+  | 'text'
+  | 'tabbar';
+
 module.exports = {
   AccessibilityTraits: [
     'none',
@@ -71,5 +79,13 @@ module.exports = {
     'disabled',
     'radiobutton_checked',
     'radiobutton_unchecked',
+  ],
+  AccessibilityRoles: [
+    'none',
+    'button',
+    'image',
+    'keyboardkey',
+    'text',
+    'tabbar',
   ],
 };

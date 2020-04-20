@@ -35,9 +35,11 @@ RCT_MULTI_ENUM_CONVERTER(UIAccessibilityTraits, (@{
   @"header": @(UIAccessibilityTraitHeader),
   @"search": @(UIAccessibilityTraitSearchField),
   @"image": @(UIAccessibilityTraitImage),
+  @"tabbar": @(UIAccessibilityTraitTabBar),
   @"selected": @(UIAccessibilityTraitSelected),
   @"plays": @(UIAccessibilityTraitPlaysSound),
   @"key": @(UIAccessibilityTraitKeyboardKey),
+  @"keyboardkey": @(UIAccessibilityTraitKeyboardKey),
   @"text": @(UIAccessibilityTraitStaticText),
   @"summary": @(UIAccessibilityTraitSummaryElement),
   @"disabled": @(UIAccessibilityTraitNotEnabled),
@@ -122,6 +124,7 @@ RCT_REMAP_VIEW_PROPERTY(accessible, reactAccessibilityElement.isAccessibilityEle
 RCT_REMAP_VIEW_PROPERTY(accessibilityActions, reactAccessibilityElement.accessibilityActions, NSString)
 RCT_REMAP_VIEW_PROPERTY(accessibilityLabel, reactAccessibilityElement.accessibilityLabel, NSString)
 RCT_REMAP_VIEW_PROPERTY(accessibilityTraits, reactAccessibilityElement.accessibilityTraits, UIAccessibilityTraits)
+RCT_REMAP_VIEW_PROPERTY(accessibilityRole, reactAccessibilityElement.accessibilityTraits, UIAccessibilityTraits)
 RCT_REMAP_VIEW_PROPERTY(accessibilityViewIsModal, reactAccessibilityElement.accessibilityViewIsModal, BOOL)
 RCT_REMAP_VIEW_PROPERTY(onAccessibilityAction, reactAccessibilityElement.onAccessibilityAction, RCTDirectEventBlock)
 RCT_REMAP_VIEW_PROPERTY(onAccessibilityTap, reactAccessibilityElement.onAccessibilityTap, RCTDirectEventBlock)

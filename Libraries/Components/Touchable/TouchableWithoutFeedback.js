@@ -11,7 +11,7 @@
  */
 'use strict';
 
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
+const DeprecatedEdgeInsetsPropType = require('DeprecatedEdgeInsetsPropType');
 const React = require('React');
 const PropTypes = require('prop-types');
 const TimerMixin = require('react-timer-mixin');
@@ -21,11 +21,11 @@ const createReactClass = require('create-react-class');
 const ensurePositiveDelayProps = require('ensurePositiveDelayProps');
 
 const {
-  AccessibilityComponentTypes,
-  AccessibilityRoles,
-  AccessibilityStates,
-  AccessibilityTraits,
-} = require('ViewAccessibility');
+  DeprecatedAccessibilityComponentTypes,
+  DeprecatedAccessibilityRoles,
+  DeprecatedAccessibilityStates,
+  DeprecatedAccessibilityTraits,
+} = require('DeprecatedViewAccessibility');
 
 export type Event = Object;
 
@@ -33,8 +33,8 @@ import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
 import type {
   AccessibilityComponentType,
   AccessibilityRole,
-  AccessibilityStates as AccessibilityStatesFlow,
-  AccessibilityTraits as AccessibilityTraitsFlow,
+  AccessibilityStates,
+  AccessibilityTraits,
 } from 'ViewAccessibility';
 
 const PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
@@ -50,8 +50,8 @@ export type Props = $ReadOnly<{|
     | any,
   accessibilityIgnoresInvertColors?: ?boolean,
   accessibilityRole?: ?AccessibilityRole,
-  accessibilityStates?: ?AccessibilityStatesFlow,
-  accessibilityTraits?: ?AccessibilityTraitsFlow,
+  accessibilityStates?: ?AccessibilityStates,
+  accessibilityTraits?: ?AccessibilityTraits,
   children?: ?React.Node,
   delayLongPress?: ?number,
   delayPressIn?: ?number,
@@ -83,17 +83,16 @@ const TouchableWithoutFeedback = ((createReactClass({
   propTypes: {
     accessible: PropTypes.bool,
     accessibilityLabel: PropTypes.node,
-    accessibilityComponentType: PropTypes.oneOfType([
-      PropTypes.oneOf(AccessibilityComponentTypes),
-      PropTypes.arrayOf(PropTypes.oneOf(AccessibilityComponentTypes))
-    ]),
-    accessibilityRole: PropTypes.oneOf(AccessibilityRoles),
+    accessibilityComponentType: PropTypes.oneOf(
+      DeprecatedAccessibilityComponentTypes,
+    ),
+    accessibilityRole: PropTypes.oneOf(DeprecatedAccessibilityRoles),
     accessibilityStates: PropTypes.arrayOf(
-      PropTypes.oneOf(AccessibilityStates),
+      PropTypes.oneOf(DeprecatedAccessibilityStates),
     ),
     accessibilityTraits: PropTypes.oneOfType([
-      PropTypes.oneOf(AccessibilityTraits),
-      PropTypes.arrayOf(PropTypes.oneOf(AccessibilityTraits)),
+      PropTypes.oneOf(DeprecatedAccessibilityTraits),
+      PropTypes.arrayOf(PropTypes.oneOf(DeprecatedAccessibilityTraits)),
     ]),
     /**
      * If true, disable all interactions for this component.
@@ -144,7 +143,7 @@ const TouchableWithoutFeedback = ((createReactClass({
      * reactivated! Move it back and forth several times while the scroll view
      * is disabled. Ensure you pass in a constant to reduce memory allocations.
      */
-    pressRetentionOffset: EdgeInsetsPropType,
+    pressRetentionOffset: DeprecatedEdgeInsetsPropType,
     /**
      * This defines how far your touch can start away from the button. This is
      * added to `pressRetentionOffset` when moving off of the button.
@@ -153,7 +152,7 @@ const TouchableWithoutFeedback = ((createReactClass({
      * of sibling views always takes precedence if a touch hits two overlapping
      * views.
      */
-    hitSlop: EdgeInsetsPropType,
+    hitSlop: DeprecatedEdgeInsetsPropType,
   },
 
   getInitialState: function() {

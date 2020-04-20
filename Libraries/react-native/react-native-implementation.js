@@ -115,7 +115,7 @@ const ReactNative = {
 
   // Prop Types
   get ColorPropType() { return require('ColorPropType'); },
-  get EdgeInsetsPropType() { return require('EdgeInsetsPropType'); },
+  get EdgeInsetsPropType() { return require('DeprecatedEdgeInsetsPropType'); },
   get PointPropType() { return require('PointPropType'); },
   get ViewPropTypes() { return require('ViewPropTypes'); },
 

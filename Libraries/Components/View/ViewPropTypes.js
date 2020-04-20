@@ -17,18 +17,11 @@ const StyleSheetPropType = require('StyleSheetPropType');
 const ViewStylePropTypes = require('ViewStylePropTypes');
 
 const {
-  AccessibilityComponentTypes,
-  AccessibilityTraits,
-  AccessibilityRoles,
-  AccessibilityStates,
-} = require('ViewAccessibility');
+  DeprecatedAccessibilityRoles,
+  DeprecatedAccessibilityStates,
+} = require('DeprecatedViewAccessibility');
 
-import type {
-  AccessibilityComponentType,
-  AccessibilityTrait,
-  AccessibilityRole,
-  AccessibilityState,
-} from 'ViewAccessibility';
+import type {AccessibilityRole, AccessibilityStates} from 'ViewAccessibility';
 import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
 import type {TVViewProps} from 'TVViewPropTypes';
 
@@ -58,13 +51,11 @@ export type ViewProps = {
     | Array<any>
     | any,
   accessibilityActions?: Array<string>,
-  accessibilityComponentType?: AccessibilityComponentType,
   accessibilityLiveRegion?: 'none' | 'polite' | 'assertive',
   importantForAccessibility?: 'auto'| 'yes'| 'no'| 'no-hide-descendants',
   accessibilityIgnoresInvertColors?: boolean,
-  accessibilityTraits?: AccessibilityTrait | Array<AccessibilityTrait>,
-  accessibilityRole?: AccessibilityRole,
-  accessibilityStates?: Array<AccessibilityState>,
+  accessibilityRole?: ?AccessibilityRole,
+  accessibilityStates?: ?AccessibilityStates,
   accessibilityViewIsModal?: bool,
   onAccessibilityAction?: Function,
   onAccessibilityTap?: Function,
@@ -123,37 +114,14 @@ module.exports = {
   accessibilityIgnoresInvertColors: PropTypes.bool,
 
   /**
-   * Indicates to accessibility services to treat UI component like a
-   * native one. Works for Android only.
-   *
-   * Possible values are one of:
-   *
-   * - `'none'`
-   * - `'button'`
-   * - `'checkbox'`
-   * - `'radiobutton'`
-   * - `'switch'`
-   * - `'checked'`
-   * - `'disabled'`
-   * - `'radiobutton_checked'` (deprecated)
-   * - `'radiobutton_unchecked'` (deprecated)
-   *
-   * @platform android
-   */
-  accessibilityComponentType: PropTypes.oneOfType([
-    PropTypes.oneOf(AccessibilityComponentTypes),
-    PropTypes.arrayOf(PropTypes.oneOf(AccessibilityComponentTypes)),
-  ]),
-
-  /**
    * Indicates to accessibility services to treat UI component like a specific role.
    */
-  accessibilityRole: PropTypes.oneOf(AccessibilityRoles),
+  accessibilityRole: PropTypes.oneOf(DeprecatedAccessibilityRoles),
 
   /**
    * Indicates to accessibility services that UI Component is in a specific State.
    */
-  accessibilityStates: PropTypes.arrayOf(PropTypes.oneOf(AccessibilityStates)),
+  accessibilityStates: PropTypes.arrayOf(PropTypes.oneOf(DeprecatedAccessibilityStates)),
 
   /**
    * Indicates to accessibility services whether the user should be notified
@@ -199,42 +167,6 @@ module.exports = {
     'yes',
     'no',
     'no-hide-descendants',
-  ]),
-
-  /**
-   * Provides additional traits to screen reader. By default no traits are
-   * provided unless specified otherwise in element.
-   *
-   * You can provide one trait or an array of many traits.
-   *
-   * Possible values for `AccessibilityTraits` are:
-   *
-   * - `'none'` - The element has no traits.
-   * - `'button'` - The element should be treated as a button.
-   * - `'link'` - The element should be treated as a link.
-   * - `'header'` - The element is a header that divides content into sections.
-   * - `'search'` - The element should be treated as a search field.
-   * - `'image'` - The element should be treated as an image.
-   * - `'selected'` - The element is selected.
-   * - `'plays'` - The element plays sound.
-   * - `'key'` - The element should be treated like a keyboard key.
-   * - `'text'` - The element should be treated as text.
-   * - `'summary'` - The element provides app summary information.
-   * - `'disabled'` - The element is disabled.
-   * - `'frequentUpdates'` - The element frequently changes its value.
-   * - `'startsMedia'` - The element starts a media session.
-   * - `'adjustable'` - The element allows adjustment over a range of values.
-   * - `'allowsDirectInteraction'` - The element allows direct touch interaction for VoiceOver users.
-   * - `'pageTurn'` - Informs VoiceOver that it should scroll to the next page when it finishes reading the contents of the element.
-   *
-   * See the [Accessibility guide](docs/accessibility.html#accessibilitytraits-ios)
-   * for more information.
-   *
-   * @platform ios
-   */
-  accessibilityTraits: PropTypes.oneOfType([
-    PropTypes.oneOf(AccessibilityTraits),
-    PropTypes.arrayOf(PropTypes.oneOf(AccessibilityTraits)),
   ]),
 
   /**

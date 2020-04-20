@@ -21,27 +21,19 @@ const createReactClass = require('create-react-class');
 const ensurePositiveDelayProps = require('ensurePositiveDelayProps');
 
 const {
-  DeprecatedAccessibilityComponentTypes,
   DeprecatedAccessibilityRoles,
   DeprecatedAccessibilityStates,
-  DeprecatedAccessibilityTraits,
 } = require('DeprecatedViewAccessibility');
 
 export type Event = Object;
 
 import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
-import type {
-  AccessibilityComponentType,
-  AccessibilityRole,
-  AccessibilityStates,
-  AccessibilityTraits,
-} from 'ViewAccessibility';
+import type {AccessibilityRole, AccessibilityStates} from 'ViewAccessibility';
 
 const PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
 
 export type Props = $ReadOnly<{|
   accessible?: ?boolean,
-  accessibilityComponentType?: ?AccessibilityComponentType,
   accessibilityLabel?:
     | null
     | React$PropType$Primitive<any>
@@ -51,7 +43,6 @@ export type Props = $ReadOnly<{|
   accessibilityIgnoresInvertColors?: ?boolean,
   accessibilityRole?: ?AccessibilityRole,
   accessibilityStates?: ?AccessibilityStates,
-  accessibilityTraits?: ?AccessibilityTraits,
   children?: ?React.Node,
   delayLongPress?: ?number,
   delayPressIn?: ?number,
@@ -83,17 +74,11 @@ const TouchableWithoutFeedback = ((createReactClass({
   propTypes: {
     accessible: PropTypes.bool,
     accessibilityLabel: PropTypes.node,
-    accessibilityComponentType: PropTypes.oneOf(
-      DeprecatedAccessibilityComponentTypes,
-    ),
+    accessibilityIgnoresInvertColors: PropTypes.bool,
     accessibilityRole: PropTypes.oneOf(DeprecatedAccessibilityRoles),
     accessibilityStates: PropTypes.arrayOf(
       PropTypes.oneOf(DeprecatedAccessibilityStates),
     ),
-    accessibilityTraits: PropTypes.oneOfType([
-      PropTypes.oneOf(DeprecatedAccessibilityTraits),
-      PropTypes.arrayOf(PropTypes.oneOf(DeprecatedAccessibilityTraits)),
-    ]),
     /**
      * If true, disable all interactions for this component.
      */

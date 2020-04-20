@@ -19,7 +19,6 @@ const Touchable = require('Touchable');
 
 const createReactClass = require('create-react-class');
 const ensurePositiveDelayProps = require('ensurePositiveDelayProps');
-const warning = require('fbjs/lib/warning');
 
 const {
   AccessibilityComponentTypes,
@@ -49,6 +48,7 @@ export type Props = $ReadOnly<{|
     | string
     | Array<any>
     | any,
+  accessibilityIgnoresInvertColors?: ?boolean,
   accessibilityRole?: ?AccessibilityRole,
   accessibilityStates?: ?AccessibilityStatesFlow,
   accessibilityTraits?: ?AccessibilityTraitsFlow,

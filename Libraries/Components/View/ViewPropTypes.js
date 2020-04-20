@@ -52,7 +52,12 @@ export type ViewLayoutEvent = {
 // so we must include TVViewProps
 export type ViewProps = {
   accessible?: bool,
-  accessibilityLabel?: null | React$PropType$Primitive<any> | string | Array<any> | any,
+  accessibilityLabel?:
+    | null
+    | React$PropType$Primitive<any>
+    | Stringish
+    | Array<any>
+    | any,
   accessibilityActions?: Array<string>,
   accessibilityComponentType?: AccessibilityComponentType,
   accessibilityLiveRegion?: 'none' | 'polite' | 'assertive',

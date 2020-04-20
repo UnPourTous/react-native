@@ -21,14 +21,14 @@ const {
   AccessibilityComponentTypes,
   AccessibilityTraits,
   AccessibilityRoles,
-  CurrentViewStates,
+  AccessibilityStates,
 } = require('ViewAccessibility');
 
 import type {
   AccessibilityComponentType,
   AccessibilityTrait,
   AccessibilityRole,
-  CurrentViewState,
+  AccessibilityState,
 } from 'ViewAccessibility';
 import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
 import type {TVViewProps} from 'TVViewPropTypes';
@@ -60,7 +60,7 @@ export type ViewProps = {
   accessibilityIgnoresInvertColors?: boolean,
   accessibilityTraits?: AccessibilityTrait | Array<AccessibilityTrait>,
   accessibilityRole?: AccessibilityRole,
-  currentViewStates?: Array<CurrentViewState>,
+  accessibilityStates?: Array<AccessibilityState>,
   accessibilityViewIsModal?: bool,
   onAccessibilityAction?: Function,
   onAccessibilityTap?: Function,
@@ -143,7 +143,7 @@ module.exports = {
   /**
    * Indicates to accessibility services that UI Component is in a specific State.
    */
-  currentViewStates: PropTypes.arrayOf(PropTypes.oneOf(CurrentViewStates)),
+  accessibilityStates: PropTypes.arrayOf(PropTypes.oneOf(AccessibilityStates)),
 
   /**
    * Indicates to accessibility services whether the user should be notified

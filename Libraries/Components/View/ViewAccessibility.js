@@ -54,11 +54,11 @@ export type AccessibilityRole =
   | 'header'
   | 'summary';
 
-export type CurrentViewState = 'selected' | 'disabled';
+export type AccessibilityState = 'selected' | 'disabled';
 
-export type CurrentViewStates =
-  | CurrentViewState
-  | $ReadOnlyArray<CurrentViewState>;
+export type AccessibilityStates =
+  | AccessibilityState
+  | $ReadOnlyArray<AccessibilityState>;
 
 module.exports = {
   AccessibilityTraits: [
@@ -104,5 +104,5 @@ module.exports = {
     'header',
     'summary',
   ],
-  CurrentViewStates: ['selected', 'disabled'],
+  AccessibilityStates: ['selected', 'disabled'],
 };

@@ -11,7 +11,6 @@
  */
 'use strict';
 
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
 const PlatformViewPropTypes = require('PlatformViewPropTypes');
 const PropTypes = require('prop-types');
 const StyleSheetPropType = require('StyleSheetPropType');
@@ -390,7 +389,7 @@ module.exports = {
    * > of sibling views always takes precedence if a touch hits two overlapping
    * > views.
    */
-  hitSlop: EdgeInsetsPropType,
+  hitSlop: EdgeInsetsProp,
 
   /**
    * Invoked on mount and layout changes with:

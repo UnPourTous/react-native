@@ -95,6 +95,7 @@ module.exports = {
     'radiobutton_checked',
     'radiobutton_unchecked',
   ],
+  // This must be kept in sync with the AccessibilityRolesMask in RCTViewManager.m
   AccessibilityRoles: [
     'none',
     'button',
@@ -108,5 +109,6 @@ module.exports = {
     'header',
     'summary',
   ],
+  // This must be kept in sync with the AccessibilityStatesMask in RCTViewManager.m
   AccessibilityStates: ['selected', 'disabled'],
 };

@@ -121,7 +121,7 @@ class AccessibilityAndroidExample extends React.Component {
         <RNTesterBlock title="Touchable with component type = button">
           <TouchableWithoutFeedback
             onPress={() => ToastAndroid.show('Toasts work by default', ToastAndroid.SHORT)}
-            accessibilityComponentType="button">
+            accessibilityRole="button">
             <View style={styles.embedded}>
               <Text>Click me</Text>
               <Text>Or not</Text>

@@ -60,7 +60,10 @@ class RowComponent extends React.PureComponent<{
   render() {
     const {item} = this.props;
     return (
-      <TouchableHighlight {...this.props} onPress={this._onPress}>
+      <TouchableHighlight
+        onShowUnderlay={this.props.onShowUnderlay}
+        onHideUnderlay={this.props.onHideUnderlay}
+        onPress={this._onPress}>
         <View style={styles.row}>
           <Text style={styles.rowTitleText}>
             {item.module.title}

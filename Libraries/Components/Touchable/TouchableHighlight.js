@@ -35,7 +35,9 @@ const ensurePositiveDelayProps = require('ensurePositiveDelayProps');
 const keyOf = require('fbjs/lib/keyOf');
 const merge = require('merge');
 
-import type {Event} from 'TouchableWithoutFeedback';
+import type {Props as TouchableWithoutFeedbackProps, Event} from 'TouchableWithoutFeedback';
+import type {ViewStyleProp} from 'StyleSheet';
+import type {ColorValue} from 'StyleSheetTypes';
 
 const DEFAULT_PROPS = {
   activeOpacity: 0.85,
@@ -43,6 +45,23 @@ const DEFAULT_PROPS = {
 };
 
 const PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
+
+type IOSProps = $ReadOnly<{|
+  hasTVPreferredFocus?: ?boolean,
+  tvParallaxProperties?: ?Object,
+|}>;
+
+type Props = $ReadOnly<{|
+  ...TouchableWithoutFeedbackProps,
+  ...IOSProps,
+
+  activeOpacity?: ?number,
+  underlayColor?: ?ColorValue,
+  style?: ?ViewStyleProp,
+  onShowUnderlay?: ?Function,
+  onHideUnderlay?: ?Function,
+  testOnly_pressed?: ?boolean,
+|}>;
 
 /**
  * A wrapper for making views respond properly to touches.
@@ -141,7 +160,7 @@ const PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
  *
  */
 
-var TouchableHighlight = createReactClass({
+const TouchableHighlight = ((createReactClass({
   displayName: 'TouchableHighlight',
   propTypes: {
     ...TouchableWithoutFeedback.propTypes,
@@ -352,8 +371,8 @@ var TouchableHighlight = createReactClass({
          * comment suppresses an error when upgrading Flow's support for React.
          * To see the error delete this comment and run Flow. */
         accessibilityLabel={this.props.accessibilityLabel}
-        accessibilityComponentType={this.props.accessibilityComponentType}
-        accessibilityTraits={this.props.accessibilityTraits}
+        accessibilityRole={this.props.accessibilityRole}
+        accessibilityStates={this.props.accessibilityStates}
         ref={UNDERLAY_REF}
         style={this.state.underlayStyle}
         onLayout={this.props.onLayout}
@@ -388,7 +407,7 @@ var TouchableHighlight = createReactClass({
       </View>
     );
   }
-});
+}): any): React.ComponentType<Props>);
 
 var CHILD_REF = keyOf({childRef: null});
 var UNDERLAY_REF = keyOf({underlayRef: null});

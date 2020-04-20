@@ -30,6 +30,10 @@ export type AccessibilityTrait =
   'allowsDirectInteraction' |
   'pageTurn';
 
+export type AccessibilityTraits =
+  | AccessibilityTrait
+  | $ReadOnlyArray<AccessibilityTrait>;
+
 export type AccessibilityComponentType =
   'none' |
   'button' |

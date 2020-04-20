@@ -112,11 +112,11 @@ class Button extends React.Component<{
         buttonStyles.push({backgroundColor: color});
       }
     }
-    const accessibilityTraits = ['button'];
+    const accessibilityStates = [];
     if (disabled) {
       buttonStyles.push(styles.buttonDisabled);
       textStyles.push(styles.textDisabled);
-      accessibilityTraits.push('disabled');
+      accessibilityStates.push('disabled');
     }
     const accessibilityComponentType = accessibilityTraits;
     invariant(
@@ -127,9 +127,9 @@ class Button extends React.Component<{
     const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
     return (
       <Touchable
-        accessibilityComponentType={accessibilityComponentType}
         accessibilityLabel={accessibilityLabel}
-        accessibilityTraits={accessibilityTraits}
+        accessibilityRole="button"
+        accessibilityStates={accessibilityStates}
         hasTVPreferredFocus={hasTVPreferredFocus}
         testID={testID}
         disabled={disabled}

@@ -14,27 +14,60 @@
 const EdgeInsetsPropType = require('EdgeInsetsPropType');
 const React = require('React');
 const PropTypes = require('prop-types');
-/* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an error
- * found when Flow v0.54 was deployed. To see the error delete this comment and
- * run Flow. */
 const TimerMixin = require('react-timer-mixin');
 const Touchable = require('Touchable');
 
 const createReactClass = require('create-react-class');
 const ensurePositiveDelayProps = require('ensurePositiveDelayProps');
-/* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an error
- * found when Flow v0.54 was deployed. To see the error delete this comment and
- * run Flow. */
 const warning = require('fbjs/lib/warning');
 
 const {
   AccessibilityComponentTypes,
+  AccessibilityRoles,
+  AccessibilityStates,
   AccessibilityTraits,
 } = require('ViewAccessibility');
 
 export type Event = Object;
 
+import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
+import type {
+  AccessibilityComponentType,
+  AccessibilityRole,
+  AccessibilityStates as AccessibilityStatesFlow,
+  AccessibilityTraits as AccessibilityTraitsFlow,
+} from 'ViewAccessibility';
+
 const PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
+
+export type Props = $ReadOnly<{|
+  accessible?: ?boolean,
+  accessibilityComponentType?: ?AccessibilityComponentType,
+  accessibilityLabel?:
+    | null
+    | React$PropType$Primitive<any>
+    | string
+    | Array<any>
+    | any,
+  accessibilityRole?: ?AccessibilityRole,
+  accessibilityStates?: ?AccessibilityStatesFlow,
+  accessibilityTraits?: ?AccessibilityTraitsFlow,
+  children?: ?React.Node,
+  delayLongPress?: ?number,
+  delayPressIn?: ?number,
+  delayPressOut?: ?number,
+  disabled?: ?boolean,
+  hitSlop?: ?EdgeInsetsProp,
+  nativeID?: ?string,
+  onLayout?: ?Function,
+  onLongPress?: ?Function,
+  onPress?: ?Function,
+  onPressIn?: ?Function,
+  onPressOut?: ?Function,
+  pressRetentionOffset?: ?EdgeInsetsProp,
+  rejectResponderTermination?: ?boolean,
+  testID?: ?string,
+|}>;
 
 /**
  * Do not use unless you have a very good reason. All elements that
@@ -43,16 +76,21 @@ const PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
  * TouchableWithoutFeedback supports only one child.
  * If you wish to have several child components, wrap them in a View.
  */
-const TouchableWithoutFeedback = createReactClass({
+const TouchableWithoutFeedback = ((createReactClass({
   displayName: 'TouchableWithoutFeedback',
   mixins: [TimerMixin, Touchable.Mixin],
 
   propTypes: {
     accessible: PropTypes.bool,
+    accessibilityLabel: PropTypes.node,
     accessibilityComponentType: PropTypes.oneOfType([
       PropTypes.oneOf(AccessibilityComponentTypes),
       PropTypes.arrayOf(PropTypes.oneOf(AccessibilityComponentTypes))
     ]),
+    accessibilityRole: PropTypes.oneOf(AccessibilityRoles),
+    accessibilityStates: PropTypes.arrayOf(
+      PropTypes.oneOf(AccessibilityStates),
+    ),
     accessibilityTraits: PropTypes.oneOfType([
       PropTypes.oneOf(AccessibilityTraits),
       PropTypes.arrayOf(PropTypes.oneOf(AccessibilityTraits)),
@@ -83,6 +121,9 @@ const TouchableWithoutFeedback = createReactClass({
     onLayout: PropTypes.func,
 
     onLongPress: PropTypes.func,
+
+    nativeID: PropTypes.string,
+    testID: PropTypes.string,
 
     /**
      * Delay in ms, from the start of the touch, before onPressIn is called.
@@ -187,13 +228,12 @@ const TouchableWithoutFeedback = createReactClass({
       child.props.style;
     return (React: any).cloneElement(child, {
       accessible: this.props.accessible !== false,
-      // $FlowFixMe(>=0.41.0)
       accessibilityLabel: this.props.accessibilityLabel,
       accessibilityComponentType: this.props.accessibilityComponentType,
+      accessibilityRole: this.props.accessibilityRole,
+      accessibilityStates: this.props.accessibilityStates,
       accessibilityTraits: this.props.accessibilityTraits,
-      // $FlowFixMe(>=0.41.0)
       nativeID: this.props.nativeID,
-      // $FlowFixMe(>=0.41.0)
       testID: this.props.testID,
       onLayout: this.props.onLayout,
       hitSlop: this.props.hitSlop,
@@ -207,6 +247,6 @@ const TouchableWithoutFeedback = createReactClass({
       children,
     });
   }
-});
+}): any): React.ComponentType<Props>);
 
 module.exports = TouchableWithoutFeedback;

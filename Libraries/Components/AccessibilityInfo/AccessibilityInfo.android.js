@@ -13,6 +13,7 @@
 
 var NativeModules = require('NativeModules');
 var RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
+const UIManager = require('UIManager');
 
 var RCTAccessibilityInfo = NativeModules.AccessibilityInfo;
 
@@ -59,6 +60,18 @@ var AccessibilityInfo = {
     }
     listener.remove();
     _subscriptions.delete(handler);
+  },
+
+  /**
+   * Set accessibility focus to a react component.
+   *
+   * See http://facebook.github.io/react-native/docs/accessibilityinfo.html#setaccessibilityfocus
+   */
+  setAccessibilityFocus: function(reactTag: number): void {
+    UIManager.sendAccessibilityEvent(
+      reactTag,
+      UIManager.AccessibilityEventTypes.typeViewFocused,
+    );
   },
 
   /**

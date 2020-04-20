@@ -142,8 +142,7 @@ module.exports = {
   ]),
 
   /**
-   * Indicates to accessibility services to treat UI component like a
-   * native one. Merging accessibilityComponentType and accessibilityTraits.
+   * Indicates to accessibility services to treat UI component like a specific role.
    */
   accessibilityRole: PropTypes.oneOf(AccessibilityRoles),
 

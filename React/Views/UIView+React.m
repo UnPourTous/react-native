@@ -314,4 +314,34 @@
   return self;
 }
 
+- (NSArray<NSString *> *)accessibilityActions
+{
+  return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void)setAccessibilityActions:(NSArray<NSString *> *)accessibilityActions
+{
+  objc_setAssociatedObject(self, @selector(accessibilityActions), accessibilityActions, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSString *)accessibilityRole
+{
+  return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void)setAccessibilityRole:(NSString *)accessibilityRole
+{
+  objc_setAssociatedObject(self, @selector(accessibilityRole), accessibilityRole, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSArray<NSString *> *)accessibilityStates
+{
+  return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void)setAccessibilityStates:(NSArray<NSString *> *)accessibilityStates
+{
+  objc_setAssociatedObject(self, @selector(accessibilityStates), accessibilityStates, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 @end

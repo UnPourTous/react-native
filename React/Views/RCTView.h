@@ -30,13 +30,6 @@ extern const UIAccessibilityTraits SwitchAccessibilityTrait;
 @property (nonatomic, copy) RCTDirectEventBlock onMagicTap;
 
 /**
- * Accessibility properties
- */
-@property (nonatomic, copy) NSArray <NSString *> *accessibilityActions;
-@property (nonatomic, copy) NSString *accessibilityRole;
-@property (nonatomic, copy) NSArray <NSString *> *accessibilityStates;
-
-/**
  * Used to control how touch events are processed.
  */
 @property (nonatomic, assign) RCTPointerEvents pointerEvents;

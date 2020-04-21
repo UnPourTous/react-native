@@ -114,6 +114,13 @@
  */
 @property (nonatomic, readonly) UIView *reactAccessibilityElement;
 
+/**
+ * Accessibility properties
+ */
+@property (nonatomic, copy) NSArray <NSString *> *accessibilityActions;
+@property (nonatomic, copy) NSString *accessibilityRole;
+@property (nonatomic, copy) NSArray <NSString *> *accessibilityStates;
+
 #if RCT_DEV
 
 /**

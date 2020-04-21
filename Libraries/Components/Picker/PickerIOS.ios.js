@@ -35,6 +35,7 @@ var PickerIOS = createReactClass({
     itemStyle: itemStylePropType,
     onValueChange: PropTypes.func,
     selectedValue: PropTypes.any, // string or integer basically
+    accessibilityLabel: PropTypes.string,
   },
 
   getInitialState: function() {
@@ -71,6 +72,7 @@ var PickerIOS = createReactClass({
           items={this.state.items}
           selectedIndex={this.state.selectedIndex}
           onChange={this._onChange}
+          accessibilityLabel={this.props.accessibilityLabel}
           onStartShouldSetResponder={() => true}
           onResponderTerminationRequest={() => false}
         />

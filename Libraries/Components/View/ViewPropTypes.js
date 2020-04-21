@@ -20,7 +20,6 @@ import type {Node} from 'react';
 import type {TVViewProps} from 'TVViewPropTypes';
 import type {
   AccessibilityRole,
-  AccessibilityStates,
   AccessibilityState,
   AccessibilityActionEvent,
   AccessibilityActionInfo,
@@ -418,7 +417,6 @@ export type ViewProps = $ReadOnly<{|
   /**
    * Indicates to accessibility services that UI Component is in a specific State.
    */
-  accessibilityStates?: ?AccessibilityStates,
   accessibilityState?: ?AccessibilityState,
 
   /**

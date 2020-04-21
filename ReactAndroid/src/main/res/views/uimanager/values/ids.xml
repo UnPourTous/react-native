@@ -12,11 +12,8 @@
   <!--tag is used to store accessibilityHint tag-->
   <item type="id" name="accessibility_hint"/>
 
-  <!--tag is used to store accessibilityRole tag-->
+  <!--tag is used to store accessibilityState -->
   <item type="id" name="accessibility_role"/>
-
-  <!--tag is used to store accessibilityStates tag-->
-  <item type="id" name="accessibility_states"/>
 
   <!--tag is used to store accessibilityState tag-->
   <item type="id" name="accessibility_state"/>

@@ -246,7 +246,6 @@ var TouchableOpacity = createReactClass({
         accessible={this.props.accessible !== false}
         accessibilityLabel={this.props.accessibilityLabel}
         accessibilityRole={this.props.accessibilityRole}
-        accessibilityStates={this.props.accessibilityStates}
         accessibilityState={this.props.accessibilityState}
         accessibilityActions={this.props.accessibilityActions}
         onAccessibilityAction={this.props.onAccessibilityAction}

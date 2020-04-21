@@ -43,7 +43,6 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
   private static final String PROP_ACCESSIBILITY_LABEL = "accessibilityLabel";
   private static final String PROP_ACCESSIBILITY_LIVE_REGION = "accessibilityLiveRegion";
   private static final String PROP_ACCESSIBILITY_ROLE = "accessibilityRole";
-  private static final String PROP_ACCESSIBILITY_STATES = "accessibilityStates";
   private static final String PROP_ACCESSIBILITY_STATE = "accessibilityState";
   private static final String PROP_ACCESSIBILITY_ACTIONS = "accessibilityActions";
   private static final String PROP_IMPORTANT_FOR_ACCESSIBILITY = "importantForAccessibility";
@@ -154,31 +153,6 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
     view.setTag(R.id.accessibility_role, AccessibilityRole.fromValue(accessibilityRole));
   }
 
-  @ReactProp(name = PROP_ACCESSIBILITY_STATES)
-  public void setViewStates(T view, ReadableArray accessibilityStates) {
-    boolean shouldUpdateContentDescription =
-        view.getTag(R.id.accessibility_states) != null && accessibilityStates == null;
-    view.setTag(R.id.accessibility_states, accessibilityStates);
-    view.setSelected(false);
-    view.setEnabled(true);
-    if (accessibilityStates != null) {
-      for (int i = 0; i < accessibilityStates.size(); i++) {
-        String state = accessibilityStates.getString(i);
-        if (sStateDescription.containsKey(state)) {
-          shouldUpdateContentDescription = true;
-        }
-        if (state.equals("selected")) {
-          view.setSelected(true);
-        } else if (state.equals("disabled")) {
-          view.setEnabled(false);
-        }
-      }
-    }
-    if (shouldUpdateContentDescription) {
-      updateViewContentDescription(view);
-    }
-  }
-
   @ReactProp(name = PROP_ACCESSIBILITY_STATE)
   public void setViewState(@Nonnull T view, @Nullable ReadableMap accessibilityState) {
     if (accessibilityState == null) {
@@ -205,19 +179,10 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
 
   private void updateViewContentDescription(@Nonnull T view) {
     final String accessibilityLabel = (String) view.getTag(R.id.accessibility_label);
-    final ReadableArray accessibilityStates = (ReadableArray) view.getTag(R.id.accessibility_states);
     final ReadableMap accessibilityState = (ReadableMap) view.getTag(R.id.accessibility_state);
     final ArrayList<String> contentDescription = new ArrayList<String>();
     if (accessibilityLabel != null) {
       contentDescription.add(accessibilityLabel);
-    }
-    if (accessibilityStates != null) {
-      for (int i = 0; i < accessibilityStates.size(); i++) {
-        final String state = accessibilityStates.getString(i);
-        if (sStateDescription.containsKey(state)) {
-          contentDescription.add(view.getContext().getString(sStateDescription.get(state)));
-        }
-      }
     }
     if (accessibilityState != null) {
       final ReadableMapKeySetIterator i = accessibilityState.keySetIterator();

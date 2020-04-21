@@ -372,7 +372,6 @@ const TouchableHighlight = ((createReactClass({
          * To see the error delete this comment and run Flow. */
         accessibilityLabel={this.props.accessibilityLabel}
         accessibilityRole={this.props.accessibilityRole}
-        accessibilityStates={this.props.accessibilityStates}
         accessibilityState={this.props.accessibilityState}
         accessibilityActions={this.props.accessibilityActions}
         onAccessibilityAction={this.props.onAccessibilityAction}

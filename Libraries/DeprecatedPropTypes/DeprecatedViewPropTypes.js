@@ -10,18 +10,15 @@
 
 'use strict';
 
-const DeprecatedEdgeInsetsPropType = require('DeprecatedEdgeInsetsPropType');
+const DeprecatedEdgeInsetsPropType = require('./DeprecatedEdgeInsetsPropType');
 const PlatformViewPropTypes = require('PlatformViewPropTypes');
 const PropTypes = require('prop-types');
-const DeprecatedStyleSheetPropType = require('DeprecatedStyleSheetPropType');
-const DeprecatedViewStylePropTypes = require('DeprecatedViewStylePropTypes');
+const DeprecatedStyleSheetPropType = require('./DeprecatedStyleSheetPropType');
+const DeprecatedViewStylePropTypes = require('./DeprecatedViewStylePropTypes');
 
-const {
-  DeprecatedAccessibilityRoles,
-  DeprecatedAccessibilityStates,
-} = require('DeprecatedViewAccessibility');
+const {DeprecatedAccessibilityRoles} = require('./DeprecatedViewAccessibility');
 
-const stylePropType = DeprecatedStyleSheetPropType(
+const stylePropType: ReactPropsCheckType = DeprecatedStyleSheetPropType(
   DeprecatedViewStylePropTypes,
 );
 
@@ -62,12 +59,6 @@ module.exports = {
    */
   accessibilityRole: PropTypes.oneOf(DeprecatedAccessibilityRoles),
 
-  /**
-   * Indicates to accessibility services that UI Component is in a specific State.
-   */
-  accessibilityStates: PropTypes.arrayOf(
-    PropTypes.oneOf(DeprecatedAccessibilityStates),
-  ),
   accessibilityState: PropTypes.object,
   /**
    * Indicates to accessibility services whether the user should be notified

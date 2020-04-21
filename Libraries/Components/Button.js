@@ -112,11 +112,11 @@ class Button extends React.Component<{
         buttonStyles.push({backgroundColor: color});
       }
     }
-    const accessibilityStates = [];
+    const accessibilityState = {};
     if (disabled) {
       buttonStyles.push(styles.buttonDisabled);
       textStyles.push(styles.textDisabled);
-      accessibilityStates.push('disabled');
+      accessibilityState.disabled = true;
     }
     const accessibilityComponentType = accessibilityTraits;
     invariant(
@@ -129,7 +129,7 @@ class Button extends React.Component<{
       <Touchable
         accessibilityLabel={accessibilityLabel}
         accessibilityRole="button"
-        accessibilityStates={accessibilityStates}
+        accessibilityState={accessibilityState}
         hasTVPreferredFocus={hasTVPreferredFocus}
         testID={testID}
         disabled={disabled}

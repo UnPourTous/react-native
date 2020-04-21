@@ -11,7 +11,7 @@
  */
 'use strict';
 
-const DeprecatedEdgeInsetsPropType = require('DeprecatedEdgeInsetsPropType');
+const DeprecatedEdgeInsetsPropType = require('../../DeprecatedPropTypes/DeprecatedEdgeInsetsPropType');
 const React = require('React');
 const PropTypes = require('prop-types');
 const TimerMixin = require('react-timer-mixin');
@@ -22,20 +22,35 @@ const ensurePositiveDelayProps = require('ensurePositiveDelayProps');
 
 const {
   DeprecatedAccessibilityRoles,
-} = require('DeprecatedViewAccessibility');
+} = require('../../DeprecatedPropTypes/DeprecatedViewAccessibility');
 
 export type Event = Object;
 
 import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
 import type {
   AccessibilityRole,
-  AccessibilityStates,
   AccessibilityState,
   AccessibilityActionInfo,
   AccessibilityActionEvent,
 } from '../View/ViewAccessibility';
 
 const PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
+
+const OVERRIDE_PROPS = [
+  'accessibilityLabel',
+  'accessibilityHint',
+  'accessibilityIgnoresInvertColors',
+  'accessibilityRole',
+  'accessibilityState',
+  'accessibilityActions',
+  'onAccessibilityAction',
+  'hitSlop',
+  'nativeID',
+  'onBlur',
+  'onFocus',
+  'onLayout',
+  'testID',
+];
 
 export type Props = $ReadOnly<{|
   accessible?: ?boolean,
@@ -47,7 +62,6 @@ export type Props = $ReadOnly<{|
     | any,
   accessibilityIgnoresInvertColors?: ?boolean,
   accessibilityRole?: ?AccessibilityRole,
-  accessibilityStates?: ?AccessibilityStates,
   accessibilityState?: ?AccessibilityState,
   accessibilityActions?: ?$ReadOnlyArray<AccessibilityActionInfo>,
   children?: ?React.Node,
@@ -84,7 +98,6 @@ const TouchableWithoutFeedback = ((createReactClass({
     accessibilityLabel: PropTypes.node,
     accessibilityIgnoresInvertColors: PropTypes.bool,
     accessibilityRole: PropTypes.oneOf(DeprecatedAccessibilityRoles),
-    accessibilityStates: PropTypes.array,
     accessibilityState: PropTypes.object,
     accessibilityActions: PropTypes.array,
     onAccessibilityAction: PropTypes.func,
@@ -219,17 +232,17 @@ const TouchableWithoutFeedback = ((createReactClass({
     const style = (Touchable.TOUCH_TARGET_DEBUG && child.type && child.type.displayName === 'Text') ?
       [child.props.style, {color: 'red'}] :
       child.props.style;
+
+    const overrides = {};
+    for (const prop of OVERRIDE_PROPS) {
+      if (this.props[prop] !== undefined) {
+        overrides[prop] = this.props[prop];
+      }
+    }
+
     return (React: any).cloneElement(child, {
+      ...overrides,
       accessible: this.props.accessible !== false,
-      accessibilityLabel: this.props.accessibilityLabel,
-      accessibilityComponentType: this.props.accessibilityComponentType,
-      accessibilityRole: this.props.accessibilityRole,
-      accessibilityStates: this.props.accessibilityStates,
-      accessibilityTraits: this.props.accessibilityTraits,
-      nativeID: this.props.nativeID,
-      testID: this.props.testID,
-      onLayout: this.props.onLayout,
-      hitSlop: this.props.hitSlop,
       onStartShouldSetResponder: this.touchableHandleStartShouldSetResponder,
       onResponderTerminationRequest: this.touchableHandleResponderTerminationRequest,
       onResponderGrant: this.touchableHandleResponderGrant,

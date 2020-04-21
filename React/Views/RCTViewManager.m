@@ -222,7 +222,7 @@ RCT_CUSTOM_VIEW_PROPERTY(accessibilityState, NSDictionary, RCTView)
   } else {
     view.reactAccessibilityElement.accessibilityState = nil;
   }
-  
+
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(pointerEvents, RCTPointerEvents, RCTView)

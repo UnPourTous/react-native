@@ -46,6 +46,9 @@ const OVERRIDE_PROPS = [
   'accessibilityActions',
   'onAccessibilityAction',
   'accessibilityValue',
+  'importantForAccessibility',
+  'accessibilityLiveRegion',
+  'accessibilityViewIsModal',
   'hitSlop',
   'nativeID',
   'onBlur',
@@ -55,24 +58,22 @@ const OVERRIDE_PROPS = [
 ];
 
 export type Props = $ReadOnly<{|
-  accessible?: ?boolean,
-  accessibilityLabel?:
-    | null
-    | React$PropType$Primitive<any>
-    | string
-    | Array<any>
-    | any,
+  accessibilityActions?: ?$ReadOnlyArray<AccessibilityActionInfo>,
   accessibilityIgnoresInvertColors?: ?boolean,
+  accessibilityLabel?: ?Stringish,
   accessibilityRole?: ?AccessibilityRole,
   accessibilityState?: ?AccessibilityState,
-  accessibilityActions?: ?$ReadOnlyArray<AccessibilityActionInfo>,
   accessibilityValue?: ?AccessibilityValue,
+  accessible?: ?boolean,
+  accessibilityLiveRegion?: ?('none' | 'polite' | 'assertive'),
+  accessibilityViewIsModal?: ?boolean,
   children?: ?React.Node,
   delayLongPress?: ?number,
   delayPressIn?: ?number,
   delayPressOut?: ?number,
   disabled?: ?boolean,
   hitSlop?: ?EdgeInsetsProp,
+  importantForAccessibility?: ?('auto' | 'yes' | 'no' | 'no-hide-descendants'),
   nativeID?: ?string,
   onLayout?: ?Function,
   onLongPress?: ?Function,
@@ -105,6 +106,46 @@ const TouchableWithoutFeedback = ((createReactClass({
     accessibilityActions: PropTypes.array,
     onAccessibilityAction: PropTypes.func,
     accessibilityValue: PropTypes.object,
+    /**
+     * Indicates to accessibility services whether the user should be notified
+     * when this view changes. Works for Android API >= 19 only.
+     *
+     * @platform android
+     *
+     * See http://facebook.github.io/react-native/docs/view.html#accessibilityliveregion
+     */
+    accessibilityLiveRegion: (PropTypes.oneOf([
+      'none',
+      'polite',
+      'assertive',
+    ]): React$PropType$Primitive<'none' | 'polite' | 'assertive'>),
+    /**
+     * Controls how view is important for accessibility which is if it
+     * fires accessibility events and if it is reported to accessibility services
+     * that query the screen. Works for Android only.
+     *
+     * @platform android
+     *
+     * See http://facebook.github.io/react-native/docs/view.html#importantforaccessibility
+     */
+    importantForAccessibility: (PropTypes.oneOf([
+      'auto',
+      'yes',
+      'no',
+      'no-hide-descendants',
+    ]): React$PropType$Primitive<
+      'auto' | 'yes' | 'no' | 'no-hide-descendants',
+      >),
+    /**
+     * A value indicating whether VoiceOver should ignore the elements
+     * within views that are siblings of the receiver.
+     * Default is `false`.
+     *
+     * @platform ios
+     *
+     * See http://facebook.github.io/react-native/docs/view.html#accessibilityviewismodal
+     */
+    accessibilityViewIsModal: PropTypes.bool,
     /**
      * If true, disable all interactions for this component.
      */

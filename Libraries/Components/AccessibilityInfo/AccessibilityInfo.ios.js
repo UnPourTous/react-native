@@ -141,7 +141,9 @@ var AccessibilityInfo = {
   },
 
   /**
-   * iOS-Only. Post a string to be announced by the screen reader.
+   * Post a string to be announced by the screen reader.
+   *
+   * See http://facebook.github.io/react-native/docs/accessibilityinfo.html#announceforaccessibility
    */
   announceForAccessibility: function(
     announcement: string

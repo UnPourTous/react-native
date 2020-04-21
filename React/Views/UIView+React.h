@@ -119,6 +119,7 @@
  */
 @property (nonatomic, copy) NSString *accessibilityRole;
 @property (nonatomic, copy) NSArray <NSString *> *accessibilityStates;
+@property (nonatomic, copy) NSDictionary<NSString *, id> *accessibilityState;
 
 #if RCT_DEV
 

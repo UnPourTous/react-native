@@ -67,3 +67,11 @@ export type AccessibilityActionEvent = SyntheticEvent<
     actionName: string,
   }>,
 >;
+
+export type AccessibilityState = {
+  disabled?: boolean,
+  selected?: boolean,
+  checked?: ?boolean | 'mixed',
+  busy?: boolean,
+  expanded?: boolean,
+};

@@ -103,6 +103,8 @@ static NSString *RCTRecursiveAccessibilityLabel(UIView *view)
 @implementation RCTView
 {
   UIColor *_backgroundColor;
+  NSMutableDictionary<NSString *, NSDictionary *> *accessibilityActionsNameMap;
+  NSMutableDictionary<NSString *, NSDictionary *> *accessibilityActionsLabelMap;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -158,6 +160,24 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
   return RCTRecursiveAccessibilityLabel(self);
 }
 
+-(void)setAccessibilityActions:(NSArray *)actions
+{
+  if (!actions) {
+    return;
+  }
+  accessibilityActionsNameMap = [[NSMutableDictionary alloc] init];
+  accessibilityActionsLabelMap = [[NSMutableDictionary alloc] init];
+  for (NSDictionary *action in actions) {
+    if (action[@"name"]) {
+      accessibilityActionsNameMap[action[@"name"]] = action;
+    }
+    if (action[@"label"]) {
+      accessibilityActionsLabelMap[action[@"label"]] = action;
+    }
+  }
+  _accessibilityActions = [actions copy];
+}
+
 - (NSArray <UIAccessibilityCustomAction *> *)accessibilityCustomActions
 {
   if (!self.accessibilityActions.count) {
@@ -165,10 +185,12 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
   }
 
   NSMutableArray *actions = [NSMutableArray array];
-  for (NSString *action in self.accessibilityActions) {
-    [actions addObject:[[UIAccessibilityCustomAction alloc] initWithName:action
-                                                                  target:self
-                                                                selector:@selector(didActivateAccessibilityCustomAction:)]];
+  for (NSDictionary *action in self.accessibilityActions) {
+    if (action[@"label"]) {
+      [actions addObject:[[UIAccessibilityCustomAction alloc] initWithName:action[@"label"]
+                                                                    target:self
+                                                                  selector:@selector(didActivateAccessibilityCustomAction:)]];
+    }
   }
 
   return [actions copy];
@@ -176,15 +198,19 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
 
 - (BOOL)didActivateAccessibilityCustomAction:(UIAccessibilityCustomAction *)action
 {
-  if (!_onAccessibilityAction) {
+  if (!_onAccessibilityAction || !accessibilityActionsLabelMap) {
     return NO;
   }
 
-  _onAccessibilityAction(@{
-    @"action": action.name,
-    @"target": self.reactTag
-  });
+  // iOS defines the name as the localized label, so use our map to convert this back to the non-localized action namne when passing to JS. This allows for standard action names across platforms.
 
+  NSDictionary *actionObject = accessibilityActionsLabelMap[action.name];
+  if (actionObject) {
+    _onAccessibilityAction(@{
+      @"actionName": actionObject[@"name"],
+      @"actionTarget": self.reactTag
+    });
+  }
   return YES;
 }
 
@@ -329,9 +355,24 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
   return NO;
 }
 
+- (BOOL)performAccessibilityAction:(NSString *) name
+{
+  if (_onAccessibilityAction && accessibilityActionsNameMap[name]) {
+    _onAccessibilityAction(@{
+                             @"actionName" : name,
+                             @"actionTarget" : self.reactTag
+                             });
+    return YES;
+  }
+  return NO;
+}
+
 - (BOOL)accessibilityActivate
 {
-  if (_onAccessibilityTap) {
+  if ([self performAccessibilityAction:@"activate"]) {
+    return YES;
+  }
+  else if (_onAccessibilityTap) {
     _onAccessibilityTap(nil);
     return YES;
   } else {
@@ -341,12 +382,24 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
 
 - (BOOL)accessibilityPerformMagicTap
 {
-  if (_onMagicTap) {
+  if ([self performAccessibilityAction:@"magicTap"]) {
+    return YES;
+  } else if (_onMagicTap) {
     _onMagicTap(nil);
     return YES;
   } else {
     return NO;
   }
+}
+
+- (void)accessibilityIncrement
+{
+  [self performAccessibilityAction:@"increment"];
+}
+
+- (void)accessibilityDecrement
+{
+  [self performAccessibilityAction:@"decrement"];
 }
 
 - (NSString *)description

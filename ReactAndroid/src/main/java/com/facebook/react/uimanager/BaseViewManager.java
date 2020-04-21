@@ -7,9 +7,8 @@ import android.text.TextUtils;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewParent;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.facebook.react.R;
 import com.facebook.react.bridge.Dynamic;
@@ -24,9 +23,10 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.util.ReactFindViewUtil;
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import javax.annotation.Nullable;
 
 /**
  * Base class that should be suitable for the majority of subclasses of {@link ViewManager}.
@@ -66,7 +66,7 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
       new MatrixMathHelper.MatrixDecompositionContext();
   private static double[] sTransformDecompositionArray = new double[16];
 
-  public static final HashMap<String, Integer> sStateDescription = new HashMap<String, Integer>();
+  public static final Map<String, Integer> sStateDescription = new HashMap<>();
 
   static {
     sStateDescription.put("busy", R.string.state_busy_description);
@@ -115,7 +115,7 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
     int integerZIndex = Math.round(zIndex);
     ViewGroupManager.setViewZIndex(view, integerZIndex);
     ViewParent parent = view.getParent();
-    if (parent != null && parent instanceof ReactZIndexedViewGroup) {
+    if (parent instanceof ReactZIndexedViewGroup) {
       ((ReactZIndexedViewGroup) parent).updateDrawingOrder();
     }
   }
@@ -180,7 +180,8 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
   private void updateViewContentDescription(@Nonnull T view) {
     final String accessibilityLabel = (String) view.getTag(R.id.accessibility_label);
     final ReadableMap accessibilityState = (ReadableMap) view.getTag(R.id.accessibility_state);
-    final ArrayList<String> contentDescription = new ArrayList<String>();
+    final List<String> contentDescription = new ArrayList<>();
+    final ReadableMap accessibilityValue = (ReadableMap) view.getTag(R.id.accessibility_value);
     if (accessibilityLabel != null) {
       contentDescription.add(accessibilityLabel);
     }
@@ -198,6 +199,12 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
         }
       }
     }
+    if (accessibilityValue != null && accessibilityValue.hasKey("text")) {
+      final Dynamic text = accessibilityValue.getDynamic("text");
+      if (text != null && text.getType() == ReadableType.String) {
+        contentDescription.add(text.asString());
+      }
+    }
     if (contentDescription.size() > 0) {
       view.setContentDescription(TextUtils.join(", ", contentDescription));
     }
@@ -210,6 +217,18 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
     }
 
     view.setTag(R.id.accessibility_actions, accessibilityActions);
+  }
+
+  @ReactProp(name = ViewProps.ACCESSIBILITY_VALUE)
+  public void setAccessibilityValue(T view, ReadableMap accessibilityValue) {
+    if (accessibilityValue == null) {
+      return;
+    }
+
+    view.setTag(R.id.accessibility_value, accessibilityValue);
+    if (accessibilityValue.hasKey("text")) {
+      updateViewContentDescription(view);
+    }
   }
 
   @ReactProp(name = PROP_IMPORTANT_FOR_ACCESSIBILITY)

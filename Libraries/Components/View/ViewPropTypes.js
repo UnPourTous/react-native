@@ -21,6 +21,7 @@ import type {TVViewProps} from 'TVViewPropTypes';
 import type {
   AccessibilityRole,
   AccessibilityState,
+  AccessibilityValue,
   AccessibilityActionEvent,
   AccessibilityActionInfo,
 } from './ViewAccessibility';
@@ -418,6 +419,7 @@ export type ViewProps = $ReadOnly<{|
    * Indicates to accessibility services that UI Component is in a specific State.
    */
   accessibilityState?: ?AccessibilityState,
+  accessibilityValue?: ?AccessibilityValue,
 
   /**
    * Provides an array of custom actions available for accessibility.

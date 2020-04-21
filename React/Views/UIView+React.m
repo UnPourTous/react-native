@@ -344,4 +344,13 @@
   objc_setAssociatedObject(self, @selector(accessibilityState), accessibilityState, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (NSDictionary<NSString *, id> *)accessibilityValueInternal
+{
+  return objc_getAssociatedObject(self, _cmd);
+}
+- (void)setAccessibilityValueInternal:(NSDictionary<NSString *, id> *)accessibilityValue
+{
+  objc_setAssociatedObject(self, @selector(accessibilityValueInternal), accessibilityValue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 @end

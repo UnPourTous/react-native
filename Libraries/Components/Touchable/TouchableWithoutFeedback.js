@@ -31,6 +31,8 @@ import type {
   AccessibilityRole,
   AccessibilityStates,
   AccessibilityState,
+  AccessibilityActionInfo,
+  AccessibilityActionEvent,
 } from '../View/ViewAccessibility';
 
 const PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
@@ -47,6 +49,7 @@ export type Props = $ReadOnly<{|
   accessibilityRole?: ?AccessibilityRole,
   accessibilityStates?: ?AccessibilityStates,
   accessibilityState?: ?AccessibilityState,
+  accessibilityActions?: ?$ReadOnlyArray<AccessibilityActionInfo>,
   children?: ?React.Node,
   delayLongPress?: ?number,
   delayPressIn?: ?number,
@@ -59,6 +62,7 @@ export type Props = $ReadOnly<{|
   onPress?: ?Function,
   onPressIn?: ?Function,
   onPressOut?: ?Function,
+  onAccessibilityAction?: ?(event: AccessibilityActionEvent) => void,
   pressRetentionOffset?: ?EdgeInsetsProp,
   rejectResponderTermination?: ?boolean,
   testID?: ?string,
@@ -82,6 +86,8 @@ const TouchableWithoutFeedback = ((createReactClass({
     accessibilityRole: PropTypes.oneOf(DeprecatedAccessibilityRoles),
     accessibilityStates: PropTypes.array,
     accessibilityState: PropTypes.object,
+    accessibilityActions: PropTypes.array,
+    onAccessibilityAction: PropTypes.func,
     /**
      * If true, disable all interactions for this component.
      */

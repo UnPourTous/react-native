@@ -26,7 +26,6 @@ public class ViewProps {
   public static final String ALIGN_ITEMS = "alignItems";
   public static final String ALIGN_SELF = "alignSelf";
   public static final String ALIGN_CONTENT = "alignContent";
-  public static final String OVERFLOW = "overflow";
   public static final String DISPLAY = "display";
   public static final String BOTTOM = "bottom";
   public static final String COLLAPSABLE = "collapsable";

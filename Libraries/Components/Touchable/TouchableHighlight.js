@@ -373,6 +373,7 @@ const TouchableHighlight = ((createReactClass({
         accessibilityLabel={this.props.accessibilityLabel}
         accessibilityRole={this.props.accessibilityRole}
         accessibilityState={this.props.accessibilityState}
+        accessibilityValue={this.props.accessibilityValue}
         accessibilityActions={this.props.accessibilityActions}
         onAccessibilityAction={this.props.onAccessibilityAction}
         ref={UNDERLAY_REF}

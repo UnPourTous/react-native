@@ -32,6 +32,7 @@ import type {
   AccessibilityState,
   AccessibilityActionInfo,
   AccessibilityActionEvent,
+  AccessibilityValue,
 } from '../View/ViewAccessibility';
 
 const PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
@@ -44,6 +45,7 @@ const OVERRIDE_PROPS = [
   'accessibilityState',
   'accessibilityActions',
   'onAccessibilityAction',
+  'accessibilityValue',
   'hitSlop',
   'nativeID',
   'onBlur',
@@ -64,6 +66,7 @@ export type Props = $ReadOnly<{|
   accessibilityRole?: ?AccessibilityRole,
   accessibilityState?: ?AccessibilityState,
   accessibilityActions?: ?$ReadOnlyArray<AccessibilityActionInfo>,
+  accessibilityValue?: ?AccessibilityValue,
   children?: ?React.Node,
   delayLongPress?: ?number,
   delayPressIn?: ?number,
@@ -101,6 +104,7 @@ const TouchableWithoutFeedback = ((createReactClass({
     accessibilityState: PropTypes.object,
     accessibilityActions: PropTypes.array,
     onAccessibilityAction: PropTypes.func,
+    accessibilityValue: PropTypes.object,
     /**
      * If true, disable all interactions for this component.
      */

@@ -13,6 +13,10 @@
     translatable="true"
   >Image</string>
   <string
+    name="button_description"
+    translatable="false"
+  >Button</string>
+  <string
     name="imagebutton_description"
     translatable="true"
   >Button, Image</string>

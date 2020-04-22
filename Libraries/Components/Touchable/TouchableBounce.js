@@ -13,7 +13,7 @@
 'use strict';
 
 var Animated = require('Animated');
-const DeprecatedEdgeInsetsPropType = require('DeprecatedEdgeInsetsPropType');
+const DeprecatedEdgeInsetsPropType = require('../../DeprecatedPropTypes/DeprecatedEdgeInsetsPropType');
 var NativeMethodsMixin = require('NativeMethodsMixin');
 var React = require('React');
 var createReactClass = require('create-react-class');

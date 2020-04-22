@@ -15,7 +15,7 @@ const StyleSheetPropType = require('StyleSheetPropType');
 const ViewStylePropTypes = require('ViewStylePropTypes');
 
 import type {PressEvent, Layout, LayoutEvent} from '../../Types/CoreEventTypes';
-import type {EdgeInsetsProp} from '../../StyleSheet/EdgeInsetsPropType';
+import {EdgeInsetsProp} from '../../StyleSheet/EdgeInsetsPropType';
 import type {Node} from 'react';
 import type {TVViewProps} from 'TVViewPropTypes';
 import type {

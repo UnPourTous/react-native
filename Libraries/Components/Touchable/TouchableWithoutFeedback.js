@@ -26,7 +26,7 @@ const {
 
 export type Event = Object;
 
-import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
+import {EdgeInsetsProp} from '../../StyleSheet/EdgeInsetsPropType';
 import type {
   AccessibilityRole,
   AccessibilityState,

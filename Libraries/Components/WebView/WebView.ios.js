@@ -12,7 +12,7 @@
 'use strict';
 
 var ActivityIndicator = require('ActivityIndicator');
-const DeprecatedEdgeInsetsPropType = require('DeprecatedEdgeInsetsPropType');
+const DeprecatedEdgeInsetsPropType = require('../../DeprecatedPropTypes/DeprecatedEdgeInsetsPropType');
 var React = require('React');
 var PropTypes = require('prop-types');
 var ReactNative = require('ReactNative');

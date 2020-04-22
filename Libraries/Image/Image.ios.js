@@ -29,7 +29,7 @@ const resolveAssetSource = require('resolveAssetSource');
 
 const ImageViewManager = NativeModules.ImageViewManager;
 
-import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
+import {EdgeInsetsProp} from '../StyleSheet/EdgeInsetsPropType';
 
 /**
  * A React component for displaying different types of images,

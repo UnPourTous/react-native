@@ -12,6 +12,7 @@
 
 'use strict';
 
+var CustomPropTypes = require('CustomPropTypes')
 var ImageStylePropTypes = require('ImageStylePropTypes');
 var TextStylePropTypes = require('TextStylePropTypes');
 var ViewStylePropTypes = require('ViewStylePropTypes');
@@ -25,6 +26,7 @@ var processTransform = require('processTransform');
 var sizesDiffer = require('sizesDiffer');
 
 var ReactNativeStyleAttributes = {
+  ...keyMirror(CustomPropTypes),
   ...keyMirror(ViewStylePropTypes),
   ...keyMirror(TextStylePropTypes),
   ...keyMirror(ImageStylePropTypes),

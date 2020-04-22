@@ -39,13 +39,7 @@ aliases:
       - v1-android-sdkmanager-packages-{{ arch }}-
   - &save-cache-android-packages
     paths:
-      - /opt/android/sdk/system-images/android-23
-      - /opt/android/sdk/system-images/android-19
-      - /opt/android/sdk/platforms/android-26
-      - /opt/android/sdk/platforms/android-23
-      - /opt/android/sdk/platforms/android-19
-      - /opt/android/sdk/build-tools/23.0.1
-      - /opt/android/sdk/add-ons/addon-google_apis-google-23
+      - /opt/android/sdk
     key: v1-android-sdkmanager-packages-{{ arch }}-{{ checksum "scripts/circle-ci-android-setup.sh" }}
 
   - &restore-cache-ndk

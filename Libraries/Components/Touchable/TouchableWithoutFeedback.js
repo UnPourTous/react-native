@@ -19,6 +19,7 @@ const Touchable = require('Touchable');
 
 const createReactClass = require('create-react-class');
 const ensurePositiveDelayProps = require('ensurePositiveDelayProps');
+const warning = require('fbjs/lib/warning');
 
 const {
   DeprecatedAccessibilityRoles,
@@ -265,6 +266,11 @@ const TouchableWithoutFeedback = ((createReactClass({
     // $FlowFixMe(>=0.41.0)
     const child = React.Children.only(this.props.children);
     let children = child.props.children;
+    warning(
+      !child.type || child.type.displayName !== 'Text',
+      'TouchableWithoutFeedback does not work well with Text children. Wrap children in a View instead. See ' +
+      ((child._owner && child._owner.getName && child._owner.getName()) || '<unknown>')
+    );
     if (Touchable.TOUCH_TARGET_DEBUG && child.type && child.type.displayName === 'View') {
       children = React.Children.toArray(children);
       children.push(Touchable.renderDebugView({color: 'red', hitSlop: this.props.hitSlop}));

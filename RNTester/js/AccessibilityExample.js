@@ -219,7 +219,7 @@ class SwitchExample extends React.Component {
 class SelectionExample extends React.Component {
   constructor(props) {
     super(props);
-    this.selectableElement = React.createRef();
+    this.selectableElement = null;
   }
 
   state = {

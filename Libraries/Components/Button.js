@@ -118,7 +118,6 @@ class Button extends React.Component<{
       textStyles.push(styles.textDisabled);
       accessibilityState.disabled = true;
     }
-    const accessibilityComponentType = accessibilityTraits;
     invariant(
       typeof title === 'string',
       'The title prop of a Button must be a string',

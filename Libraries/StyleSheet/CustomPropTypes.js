@@ -31,6 +31,19 @@ var CustomPropTypes = {
   nativeID: ReactPropTypes.string,
   testID: ReactPropTypes.string,
   renderToHardwareTextureAndroid: ReactPropTypes.bool,
+  /**
+   *
+   * @platform ios
+   */
+  onMagicTap: ReactPropTypes.bool,
+  onAccessibilityTap: ReactPropTypes.bool,
+  onAccessibilityAction: ReactPropTypes.bool,
+  shouldRasterizeIOS: ReactPropTypes.bool,
+  accessibilityIgnoresInvertColors: ReactPropTypes.bool,
+  accessibilityViewIsModal: ReactPropTypes.bool,
+  contentInset: ReactPropTypes.object,
+  scrollIndicatorInsets: ReactPropTypes.object,
+  capInsets: ReactPropTypes.object,
 };
 
 module.exports = CustomPropTypes;

@@ -37,7 +37,7 @@ const requireNativeComponent = require('requireNativeComponent');
  * run Flow. */
 const warning = require('fbjs/lib/warning');
 
-import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
+import {EdgeInsetsProp} from '../../StyleSheet/EdgeInsetsPropType'
 import type {NativeMethodsMixinType} from 'ReactNativeTypes';
 
 /**

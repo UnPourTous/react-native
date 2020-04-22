@@ -28,7 +28,7 @@ const processColor = require('processColor');
 
 const stylePropType = StyleSheetPropType(TextStylePropTypes);
 
-import type {EdgeInsetsProp} from 'EdgeInsetsPropType';
+import {EdgeInsetsProp} from '../StyleSheet/EdgeInsetsPropType'
 
 const viewConfig = {
   validAttributes: mergeFast(ReactNativeViewAttributes.UIView, {

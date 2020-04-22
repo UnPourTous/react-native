@@ -9,7 +9,6 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.facebook.react.R;
@@ -156,7 +155,7 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
   }
 
   @ReactProp(name = PROP_ACCESSIBILITY_STATE)
-  public void setViewState(@Nonnull T view, @Nullable ReadableMap accessibilityState) {
+  public void setViewState(T view, @Nullable ReadableMap accessibilityState) {
     if (accessibilityState == null) {
       return;
     }
@@ -187,7 +186,7 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
     }
   }
 
-  private void updateViewContentDescription(@Nonnull T view) {
+  private void updateViewContentDescription(T view) {
     final String accessibilityLabel = (String) view.getTag(R.id.accessibility_label);
     final ReadableMap accessibilityState = (ReadableMap) view.getTag(R.id.accessibility_state);
     final List<String> contentDescription = new ArrayList<>();
@@ -243,7 +242,7 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
 
   @ReactProp(name = PROP_IMPORTANT_FOR_ACCESSIBILITY)
   public void setImportantForAccessibility(
-        @Nonnull T view, @Nullable String importantForAccessibility) {
+        T view, @Nullable String importantForAccessibility) {
     if (importantForAccessibility == null || importantForAccessibility.equals("auto")) {
       view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
     } else if (importantForAccessibility.equals("yes")) {
@@ -346,12 +345,12 @@ public abstract class BaseViewManager<T extends View, C extends LayoutShadowNode
     view.setCameraDistance(0);
   }
 
-  private void updateViewAccessibility(@Nonnull T view) {
+  private void updateViewAccessibility(T view) {
     ReactAccessibilityDelegate.setDelegate(view);
   }
 
   @Override
-  protected void onAfterUpdateTransaction(@Nonnull T view) {
+  protected void onAfterUpdateTransaction(T view) {
     super.onAfterUpdateTransaction(view);
     updateViewAccessibility(view);
   }

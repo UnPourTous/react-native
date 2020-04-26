@@ -28,7 +28,7 @@ const processColor = require('processColor');
 
 const stylePropType = StyleSheetPropType(TextStylePropTypes);
 
-import {EdgeInsetsProp} from '../StyleSheet/EdgeInsetsPropType'
+const DeprecatedEdgeInsetsPropType = require('../DeprecatedPropTypes/DeprecatedEdgeInsetsPropType');
 
 const viewConfig = {
   validAttributes: mergeFast(ReactNativeViewAttributes.UIView, {
@@ -347,7 +347,7 @@ const Text = createReactClass({
      * reactivated! Move it back and forth several times while the scroll view
      * is disabled. Ensure you pass in a constant to reduce memory allocations.
      */
-    pressRetentionOffset: EdgeInsetsProp,
+    pressRetentionOffset: DeprecatedEdgeInsetsPropType,
     /**
      * Lets the user select text, to use the native copy and paste functionality.
      */

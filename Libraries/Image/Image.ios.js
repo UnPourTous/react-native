@@ -29,7 +29,7 @@ const resolveAssetSource = require('resolveAssetSource');
 
 const ImageViewManager = NativeModules.ImageViewManager;
 
-import {EdgeInsetsProp} from '../StyleSheet/EdgeInsetsPropType';
+const DeprecatedEdgeInsetsPropType = require('../DeprecatedPropTypes/DeprecatedEdgeInsetsPropType');
 
 /**
  * A React component for displaying different types of images,
@@ -203,7 +203,7 @@ const Image = createReactClass({
      *
      * @platform ios
      */
-    capInsets: EdgeInsetsProp,
+    capInsets: DeprecatedEdgeInsetsPropType,
     /**
      * The mechanism that should be used to resize the image when the image's dimensions
      * differ from the image view's dimensions. Defaults to `auto`.

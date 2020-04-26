@@ -44,6 +44,10 @@ var CustomPropTypes = {
   contentInset: ReactPropTypes.object,
   scrollIndicatorInsets: ReactPropTypes.object,
   capInsets: ReactPropTypes.object,
+  /**
+   * @deprecated
+   */
+  accessibilityComponentType: ReactPropTypes.string,
 };
 
 module.exports = CustomPropTypes;

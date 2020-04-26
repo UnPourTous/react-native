@@ -68,10 +68,12 @@ var AccessibilityInfo = {
    * See http://facebook.github.io/react-native/docs/accessibilityinfo.html#setaccessibilityfocus
    */
   setAccessibilityFocus: function(reactTag: number): void {
-    UIManager.sendAccessibilityEvent(
-      reactTag,
-      UIManager.AccessibilityEventTypes.typeViewFocused,
-    );
+    if (UIManager.AccessibilityEventTypes.typeViewFocused) {
+      UIManager.sendAccessibilityEvent(
+        reactTag,
+        UIManager.AccessibilityEventTypes.typeViewFocused,
+      );
+    }
   },
 
   /**

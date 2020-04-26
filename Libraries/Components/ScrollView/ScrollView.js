@@ -37,7 +37,7 @@ const requireNativeComponent = require('requireNativeComponent');
  * run Flow. */
 const warning = require('fbjs/lib/warning');
 
-import {EdgeInsetsProp} from '../../StyleSheet/EdgeInsetsPropType'
+const DeprecatedEdgeInsetsPropType = require('../../DeprecatedPropTypes/DeprecatedEdgeInsetsPropType');
 import type {NativeMethodsMixinType} from 'ReactNativeTypes';
 
 /**
@@ -92,7 +92,7 @@ const ScrollView = createReactClass({
      * of the scroll view. Defaults to `{top: 0, left: 0, bottom: 0, right: 0}`.
      * @platform ios
      */
-    contentInset: EdgeInsetsProp,
+    contentInset: DeprecatedEdgeInsetsPropType,
     /**
      * Used to manually set the starting scroll offset.
      * The default value is `{x: 0, y: 0}`.
@@ -306,7 +306,7 @@ const ScrollView = createReactClass({
      * the `contentInset`. Defaults to `{0, 0, 0, 0}`.
      * @platform ios
      */
-    scrollIndicatorInsets: EdgeInsetsProp,
+    scrollIndicatorInsets: DeprecatedEdgeInsetsPropType,
     /**
      * When true, the scroll view scrolls to top when the status bar is tapped.
      * The default value is true.

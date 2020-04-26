@@ -477,3 +477,10 @@ export type ViewProps = $ReadOnly<{|
    */
   removeClippedSubviews?: ?boolean,
 |}>;
+
+module.exports = {
+  /**
+   * @deprecated
+   */
+  style: stylePropType,
+}

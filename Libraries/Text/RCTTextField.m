@@ -98,6 +98,11 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 #pragma mark - RCTBackedTextInputDelegate
 
+- (BOOL)isOnChineseInputMiddleState
+{
+  return [_backedTextInput.textInputMode.primaryLanguage isEqualToString:@"zh-Hans"] && _backedTextInput.markedTextRange != nil;
+}
+
 - (BOOL)textInputShouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string
 {
   // Only allow single keypresses for `onKeyPress`, pasted text will not be sent.
@@ -107,6 +112,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
   if (_maxLength != nil && ![string isEqualToString:@"\n"]) { // Make sure forms can be submitted via return.
     NSUInteger allowedLength = _maxLength.integerValue - MIN(_maxLength.integerValue, _backedTextInput.text.length) + range.length;
+    if ([self isOnChineseInputMiddleState]) {
+      allowedLength = range.length > 0 ? MAX(_maxLength.integerValue - range.location, 0) : allowedLength + string.length;
+    }
     if (string.length > allowedLength) {
       if (string.length > 1) {
         // Truncate the input string so the result is exactly `maxLength`.

@@ -100,7 +100,10 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (BOOL)isOnChineseInputMiddleState
 {
-  return [_backedTextInput.textInputMode.primaryLanguage isEqualToString:@"zh-Hans"] && _backedTextInput.markedTextRange != nil;
+  return ([_backedTextInput.textInputMode.primaryLanguage isEqualToString:@"zh-Hans"] || // Simplified Chinese
+          [_backedTextInput.textInputMode.primaryLanguage isEqualToString:@"zh-Hant"] || // Traditional Chinese
+          [_backedTextInput.textInputMode.primaryLanguage isEqualToString:@"yue-Hant"]) && // Cantonese
+          _backedTextInput.markedTextRange != nil;
 }
 
 - (BOOL)textInputShouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string

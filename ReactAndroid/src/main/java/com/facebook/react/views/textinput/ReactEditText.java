@@ -421,7 +421,7 @@ public class ReactEditText extends EditText {
   }
 
   private boolean showSoftKeyboard() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !this.getShowSoftInputOnFocus()) {
+    if (!this.getShowSoftInputOnFocus()) {
       return false;
     }
     return mInputMethodManager.showSoftInput(this, 0);

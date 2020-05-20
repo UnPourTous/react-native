@@ -50,6 +50,11 @@ class AccessibilityIOSExample extends React.Component<Props> {
             Accessibility magic tap example
           </Text>
         </View>
+        <View accessibilityElementsHidden={true}>
+          <Text>
+            This view's children are hidden from the accessibility tree
+          </Text>
+        </View>
       </RNTesterBlock>
     );
   }

@@ -14,9 +14,9 @@
 var React = require('react');
 var ReactNative = require('react-native');
 var {
-  AccessibilityInfo,
   Text,
   View,
+  Alert
 } = ReactNative;
 
 const RNTesterBlock = require('./RNTesterBlock');
@@ -48,6 +48,11 @@ class AccessibilityIOSExample extends React.Component<Props> {
           accessibilityActions={[{name: 'magicTap'}]}>
           <Text>
             Accessibility magic tap example
+          </Text>
+        </View>
+        <View accessibilityElementsHidden={true}>
+          <Text>
+            This view's children are hidden from the accessibility tree
           </Text>
         </View>
       </RNTesterBlock>

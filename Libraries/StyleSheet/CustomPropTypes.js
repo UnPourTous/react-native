@@ -38,6 +38,7 @@ var CustomPropTypes = {
   onMagicTap: ReactPropTypes.bool,
   onAccessibilityTap: ReactPropTypes.bool,
   onAccessibilityAction: ReactPropTypes.bool,
+  accessibilityElementsHidden: ReactPropTypes.bool,
   shouldRasterizeIOS: ReactPropTypes.bool,
   accessibilityIgnoresInvertColors: ReactPropTypes.bool,
   accessibilityViewIsModal: ReactPropTypes.bool,

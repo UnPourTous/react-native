@@ -50,6 +50,7 @@ const OVERRIDE_PROPS = [
   'importantForAccessibility',
   'accessibilityLiveRegion',
   'accessibilityViewIsModal',
+  'accessibilityElementsHidden',
   'hitSlop',
   'nativeID',
   'onBlur',
@@ -68,6 +69,7 @@ export type Props = $ReadOnly<{|
   accessible?: ?boolean,
   accessibilityLiveRegion?: ?('none' | 'polite' | 'assertive'),
   accessibilityViewIsModal?: ?boolean,
+  accessibilityElementsHidden?: ?boolean,
   children?: ?React.Node,
   delayLongPress?: ?number,
   delayPressIn?: ?number,
@@ -147,6 +149,15 @@ const TouchableWithoutFeedback = ((createReactClass({
      * See http://facebook.github.io/react-native/docs/view.html#accessibilityviewismodal
      */
     accessibilityViewIsModal: PropTypes.bool,
+    /**
+     * A value indicating whether the accessibility elements contained within
+     * this accessibility element are hidden.
+     *
+     * @platform ios
+     *
+     * See http://facebook.github.io/react-native/docs/view.html#accessibilityElementsHidden
+     */
+    accessibilityElementsHidden: PropTypes.bool,
     /**
      * If true, disable all interactions for this component.
      */

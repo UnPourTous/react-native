@@ -13,11 +13,9 @@
 var React = require('react');
 var ReactNative = require('react-native');
 var {
-  AccessibilityInfo,
   StyleSheet,
   Text,
   View,
-  ToastAndroid,
   TouchableWithoutFeedback,
 } = ReactNative;
 

@@ -2,28 +2,28 @@
 <resources>
   <string
     name="link_description"
-    translatable="true"
-  >Link</string>
+    translatable="false"
+  >链接</string>
   <string
     name="search_description"
-    translatable="true"
-  >Search Field</string>
+    translatable="false"
+  >搜索栏</string>
   <string
     name="image_description"
-    translatable="true"
-  >Image</string>
+    translatable="false"
+  >图像</string>
   <string
     name="button_description"
-    translatable="true"
-  >Button</string>
+    translatable="false"
+  >按钮</string>
   <string
     name="imagebutton_description"
-    translatable="true"
-  >Button, Image</string>
+    translatable="false"
+  >按钮, 图像</string>
   <string
     name="header_description"
-    translatable="true"
-  >Heading</string>
+    translatable="false"
+  >标题</string>
   <string
     name="alert_description"
     translatable="true"
@@ -102,6 +102,6 @@
   >off</string>
   <string
     name="state_mixed_description"
-    translatable="true"
+    translatable="false"
   >mixed</string>
 </resources>

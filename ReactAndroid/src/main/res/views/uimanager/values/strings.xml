@@ -14,7 +14,7 @@
   >Image</string>
   <string
     name="button_description"
-    translatable="false"
+    translatable="true"
   >Button</string>
   <string
     name="imagebutton_description"
@@ -22,7 +22,7 @@
   >Button, Image</string>
   <string
     name="header_description"
-    translatable="false"
+    translatable="true"
   >Heading</string>
   <string
     name="alert_description"
@@ -102,6 +102,6 @@
   >off</string>
   <string
     name="state_mixed_description"
-    translatable="false"
+    translatable="true"
   >mixed</string>
 </resources>

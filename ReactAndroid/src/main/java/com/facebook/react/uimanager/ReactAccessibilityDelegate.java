@@ -361,10 +361,14 @@ public class ReactAccessibilityDelegate extends AccessibilityDelegateCompat {
       final AccessibilityNodeInfoCompat.CollectionItemInfoCompat itemInfo =
         AccessibilityNodeInfoCompat.CollectionItemInfoCompat.obtain(0, 1, 0, 1, true);
       nodeInfo.setCollectionItemInfo(itemInfo);
+    } else if (role.equals(AccessibilityRole.ADJUSTABLE)) {
+      nodeInfo.setRoleDescription(context.getString(R.string.adjustable_description));
     } else if (role.equals(AccessibilityRole.ALERT)) {
       nodeInfo.setRoleDescription(context.getString(R.string.alert_description));
     } else if (role.equals(AccessibilityRole.COMBOBOX)) {
       nodeInfo.setRoleDescription(context.getString(R.string.combobox_description));
+    } else if (role.equals(AccessibilityRole.KEYBOARDKEY)) {
+      nodeInfo.setRoleDescription(context.getString(R.string.keyboardkey_description));
     } else if (role.equals(AccessibilityRole.MENU)) {
       nodeInfo.setRoleDescription(context.getString(R.string.menu_description));
     } else if (role.equals(AccessibilityRole.MENUBAR)) {
@@ -373,12 +377,16 @@ public class ReactAccessibilityDelegate extends AccessibilityDelegateCompat {
       nodeInfo.setRoleDescription(context.getString(R.string.menuitem_description));
     } else if (role.equals(AccessibilityRole.PROGRESSBAR)) {
       nodeInfo.setRoleDescription(context.getString(R.string.progressbar_description));
+    } else if (role.equals(AccessibilityRole.RADIO)) {
+      nodeInfo.setRoleDescription(context.getString(R.string.radio_description));
     } else if (role.equals(AccessibilityRole.RADIOGROUP)) {
       nodeInfo.setRoleDescription(context.getString(R.string.radiogroup_description));
     } else if (role.equals(AccessibilityRole.SCROLLBAR)) {
       nodeInfo.setRoleDescription(context.getString(R.string.scrollbar_description));
     } else if (role.equals(AccessibilityRole.SPINBUTTON)) {
       nodeInfo.setRoleDescription(context.getString(R.string.spinbutton_description));
+    } else if (role.equals(AccessibilityRole.SWITCH)) {
+      nodeInfo.setRoleDescription(context.getString(R.string.switch_description));
     } else if (role.equals(AccessibilityRole.TAB)) {
       nodeInfo.setRoleDescription(context.getString(R.string.rn_tab_description));
     } else if (role.equals(AccessibilityRole.TABLIST)) {

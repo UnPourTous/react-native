@@ -224,13 +224,14 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
                          @"checkbox" : @"复选框",
                          @"combobox" : @"弹出式按钮",
                          @"menu" : @"菜单",
-                         @"menubar" : @"menu bar",
+                         @"menubar" : @"菜单",
                          @"menuitem" : @"菜单项",
                          @"progressbar" : @"进度指示器",
                          @"radio" : @"单选按钮",
                          @"radiogroup" : @"单选按钮组",
                          @"scrollbar" : @"滚动条",
                          @"spinbutton" : @"微调按钮",
+                         @"summary" : @"摘要",
                          @"switch" : @"switch",
                          @"tab" : @"标签",
                          @"tablist" : @"标签列表",
@@ -242,8 +243,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
   static dispatch_once_t onceToken2;
   dispatch_once(&onceToken2, ^{
     stateDescriptions = @{
-                          @"checked" : @"checked",
-                          @"unchecked" : @"not checked",
+                          @"checked" : @"已勾选",
+                          @"unchecked" : @"未勾选",
                           @"busy" : @"正忙",
                           @"expanded" : @"已展开",
                           @"collapsed" : @"已收起",

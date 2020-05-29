@@ -38,8 +38,8 @@
   >菜单</string>
   <string
     name="menubar_description"
-    translatable="true"
-  >Menu Bar</string>
+    translatable="false"
+  >菜单</string>
   <string
     name="menuitem_description"
     translatable="false"

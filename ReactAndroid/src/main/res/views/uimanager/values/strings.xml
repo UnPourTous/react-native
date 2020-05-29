@@ -7,7 +7,7 @@
   <string
     name="search_description"
     translatable="false"
-  >搜索</string>
+  >搜索栏</string>
   <string
     name="image_description"
     translatable="false"
@@ -19,7 +19,7 @@
   <string
     name="imagebutton_description"
     translatable="false"
-  >按钮</string>
+  >图像按钮</string>
   <string
     name="header_description"
     translatable="false"
@@ -31,7 +31,7 @@
   <string
     name="combobox_description"
     translatable="false"
-  >弹出式按钮</string>
+  >下拉列表框</string>
   <string
     name="menu_description"
     translatable="false"
@@ -39,7 +39,7 @@
   <string
     name="menubar_description"
     translatable="false"
-  >菜单</string>
+  >菜单栏</string>
   <string
     name="menuitem_description"
     translatable="false"
@@ -49,9 +49,13 @@
     translatable="false"
   >进度指示器</string>
   <string
+    name="radio_description"
+    translatable="false"
+  >单选框</string>
+  <string
     name="radiogroup_description"
     translatable="false"
-  >单选按钮组</string>
+  >单选框组</string>
   <string
     name="scrollbar_description"
     translatable="false"
@@ -63,11 +67,11 @@
   <string
     name="rn_tab_description"
     translatable="false"
-  >标签</string>
+  >标签页</string>
   <string
     name="tablist_description"
     translatable="false"
-  >标签列表</string>
+  >标签页列表</string>
   <string
     name="timer_description"
     translatable="false"
@@ -80,6 +84,18 @@
     name="summary_description"
     translatable="false"
   >摘要</string>
+  <string
+    name="adjustable_description"
+    translatable="false"
+  >滑块</string>
+  <string
+    name="keyboardkey_description"
+    translatable="false"
+  >键盘按钮</string>
+  <string
+    name="switch_description"
+    translatable="false"
+  >开关</string>
   <string
     name="state_busy_description"
     translatable="false"

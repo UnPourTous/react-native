@@ -82,7 +82,9 @@ var AccessibilityInfo = {
    * See http://facebook.github.io/react-native/docs/accessibilityinfo.html#announceforaccessibility
    */
   announceForAccessibility: function(announcement: string): void {
-    RCTAccessibilityInfo.announceForAccessibility(announcement);
+    if (RCTAccessibilityInfo.announceForAccessibility) {
+      RCTAccessibilityInfo.announceForAccessibility(announcement);
+    }
   },
 };
 

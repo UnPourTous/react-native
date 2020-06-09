@@ -11,30 +11,83 @@
  */
 'use strict';
 
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
+const DeprecatedEdgeInsetsPropType = require('../../DeprecatedPropTypes/DeprecatedEdgeInsetsPropType');
 const React = require('React');
 const PropTypes = require('prop-types');
-/* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an error
- * found when Flow v0.54 was deployed. To see the error delete this comment and
- * run Flow. */
 const TimerMixin = require('react-timer-mixin');
 const Touchable = require('Touchable');
 
 const createReactClass = require('create-react-class');
 const ensurePositiveDelayProps = require('ensurePositiveDelayProps');
-/* $FlowFixMe(>=0.54.0 site=react_native_oss) This comment suppresses an error
- * found when Flow v0.54 was deployed. To see the error delete this comment and
- * run Flow. */
 const warning = require('fbjs/lib/warning');
 
 const {
-  AccessibilityComponentTypes,
-  AccessibilityTraits,
-} = require('ViewAccessibility');
+  DeprecatedAccessibilityRoles,
+} = require('../../DeprecatedPropTypes/DeprecatedViewAccessibility');
 
 export type Event = Object;
 
+import {EdgeInsetsProp} from '../../StyleSheet/EdgeInsetsPropType';
+import type {
+  AccessibilityRole,
+  AccessibilityState,
+  AccessibilityActionInfo,
+  AccessibilityActionEvent,
+  AccessibilityValue,
+} from '../View/ViewAccessibility';
+
 const PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
+
+const OVERRIDE_PROPS = [
+  'accessibilityLabel',
+  'accessibilityHint',
+  'accessibilityIgnoresInvertColors',
+  'accessibilityRole',
+  'accessibilityState',
+  'accessibilityActions',
+  'onAccessibilityAction',
+  'accessibilityValue',
+  'importantForAccessibility',
+  'accessibilityLiveRegion',
+  'accessibilityViewIsModal',
+  'accessibilityElementsHidden',
+  'hitSlop',
+  'nativeID',
+  'onBlur',
+  'onFocus',
+  'onLayout',
+  'testID',
+];
+
+export type Props = $ReadOnly<{|
+  accessibilityActions?: ?$ReadOnlyArray<AccessibilityActionInfo>,
+  accessibilityIgnoresInvertColors?: ?boolean,
+  accessibilityLabel?: ?Stringish,
+  accessibilityRole?: ?AccessibilityRole,
+  accessibilityState?: ?AccessibilityState,
+  accessibilityValue?: ?AccessibilityValue,
+  accessible?: ?boolean,
+  accessibilityLiveRegion?: ?('none' | 'polite' | 'assertive'),
+  accessibilityViewIsModal?: ?boolean,
+  accessibilityElementsHidden?: ?boolean,
+  children?: ?React.Node,
+  delayLongPress?: ?number,
+  delayPressIn?: ?number,
+  delayPressOut?: ?number,
+  disabled?: ?boolean,
+  hitSlop?: ?EdgeInsetsProp,
+  importantForAccessibility?: ?('auto' | 'yes' | 'no' | 'no-hide-descendants'),
+  nativeID?: ?string,
+  onLayout?: ?Function,
+  onLongPress?: ?Function,
+  onPress?: ?Function,
+  onPressIn?: ?Function,
+  onPressOut?: ?Function,
+  onAccessibilityAction?: ?(event: AccessibilityActionEvent) => void,
+  pressRetentionOffset?: ?EdgeInsetsProp,
+  rejectResponderTermination?: ?boolean,
+  testID?: ?string,
+|}>;
 
 /**
  * Do not use unless you have a very good reason. All elements that
@@ -43,20 +96,68 @@ const PRESS_RETENTION_OFFSET = {top: 20, left: 20, right: 20, bottom: 30};
  * TouchableWithoutFeedback supports only one child.
  * If you wish to have several child components, wrap them in a View.
  */
-const TouchableWithoutFeedback = createReactClass({
+const TouchableWithoutFeedback = ((createReactClass({
   displayName: 'TouchableWithoutFeedback',
   mixins: [TimerMixin, Touchable.Mixin],
 
   propTypes: {
     accessible: PropTypes.bool,
-    accessibilityComponentType: PropTypes.oneOfType([
-      PropTypes.oneOf(AccessibilityComponentTypes),
-      PropTypes.arrayOf(PropTypes.oneOf(AccessibilityComponentTypes))
-    ]),
-    accessibilityTraits: PropTypes.oneOfType([
-      PropTypes.oneOf(AccessibilityTraits),
-      PropTypes.arrayOf(PropTypes.oneOf(AccessibilityTraits)),
-    ]),
+    accessibilityLabel: PropTypes.node,
+    accessibilityIgnoresInvertColors: PropTypes.bool,
+    accessibilityRole: PropTypes.oneOf(DeprecatedAccessibilityRoles),
+    accessibilityState: PropTypes.object,
+    accessibilityActions: PropTypes.array,
+    onAccessibilityAction: PropTypes.func,
+    accessibilityValue: PropTypes.object,
+    /**
+     * Indicates to accessibility services whether the user should be notified
+     * when this view changes. Works for Android API >= 19 only.
+     *
+     * @platform android
+     *
+     * See http://facebook.github.io/react-native/docs/view.html#accessibilityliveregion
+     */
+    accessibilityLiveRegion: (PropTypes.oneOf([
+      'none',
+      'polite',
+      'assertive',
+    ]): React$PropType$Primitive<'none' | 'polite' | 'assertive'>),
+    /**
+     * Controls how view is important for accessibility which is if it
+     * fires accessibility events and if it is reported to accessibility services
+     * that query the screen. Works for Android only.
+     *
+     * @platform android
+     *
+     * See http://facebook.github.io/react-native/docs/view.html#importantforaccessibility
+     */
+    importantForAccessibility: (PropTypes.oneOf([
+      'auto',
+      'yes',
+      'no',
+      'no-hide-descendants',
+    ]): React$PropType$Primitive<
+      'auto' | 'yes' | 'no' | 'no-hide-descendants',
+      >),
+    /**
+     * A value indicating whether VoiceOver should ignore the elements
+     * within views that are siblings of the receiver.
+     * Default is `false`.
+     *
+     * @platform ios
+     *
+     * See http://facebook.github.io/react-native/docs/view.html#accessibilityviewismodal
+     */
+    accessibilityViewIsModal: PropTypes.bool,
+    /**
+     * A value indicating whether the accessibility elements contained within
+     * this accessibility element are hidden.
+     *
+     * @platform ios
+     *
+     * See http://facebook.github.io/react-native/docs/view.html#accessibilityElementsHidden
+     */
+    accessibilityElementsHidden: PropTypes.bool,
     /**
      * If true, disable all interactions for this component.
      */
@@ -84,6 +185,9 @@ const TouchableWithoutFeedback = createReactClass({
 
     onLongPress: PropTypes.func,
 
+    nativeID: PropTypes.string,
+    testID: PropTypes.string,
+
     /**
      * Delay in ms, from the start of the touch, before onPressIn is called.
      */
@@ -103,7 +207,7 @@ const TouchableWithoutFeedback = createReactClass({
      * reactivated! Move it back and forth several times while the scroll view
      * is disabled. Ensure you pass in a constant to reduce memory allocations.
      */
-    pressRetentionOffset: EdgeInsetsPropType,
+    pressRetentionOffset: DeprecatedEdgeInsetsPropType,
     /**
      * This defines how far your touch can start away from the button. This is
      * added to `pressRetentionOffset` when moving off of the button.
@@ -112,7 +216,7 @@ const TouchableWithoutFeedback = createReactClass({
      * of sibling views always takes precedence if a touch hits two overlapping
      * views.
      */
-    hitSlop: EdgeInsetsPropType,
+    hitSlop: DeprecatedEdgeInsetsPropType,
   },
 
   getInitialState: function() {
@@ -176,7 +280,7 @@ const TouchableWithoutFeedback = createReactClass({
     warning(
       !child.type || child.type.displayName !== 'Text',
       'TouchableWithoutFeedback does not work well with Text children. Wrap children in a View instead. See ' +
-        ((child._owner && child._owner.getName && child._owner.getName()) || '<unknown>')
+      ((child._owner && child._owner.getName && child._owner.getName()) || '<unknown>')
     );
     if (Touchable.TOUCH_TARGET_DEBUG && child.type && child.type.displayName === 'View') {
       children = React.Children.toArray(children);
@@ -185,18 +289,17 @@ const TouchableWithoutFeedback = createReactClass({
     const style = (Touchable.TOUCH_TARGET_DEBUG && child.type && child.type.displayName === 'Text') ?
       [child.props.style, {color: 'red'}] :
       child.props.style;
+
+    const overrides = {};
+    for (const prop of OVERRIDE_PROPS) {
+      if (this.props[prop] !== undefined) {
+        overrides[prop] = this.props[prop];
+      }
+    }
+
     return (React: any).cloneElement(child, {
+      ...overrides,
       accessible: this.props.accessible !== false,
-      // $FlowFixMe(>=0.41.0)
-      accessibilityLabel: this.props.accessibilityLabel,
-      accessibilityComponentType: this.props.accessibilityComponentType,
-      accessibilityTraits: this.props.accessibilityTraits,
-      // $FlowFixMe(>=0.41.0)
-      nativeID: this.props.nativeID,
-      // $FlowFixMe(>=0.41.0)
-      testID: this.props.testID,
-      onLayout: this.props.onLayout,
-      hitSlop: this.props.hitSlop,
       onStartShouldSetResponder: this.touchableHandleStartShouldSetResponder,
       onResponderTerminationRequest: this.touchableHandleResponderTerminationRequest,
       onResponderGrant: this.touchableHandleResponderGrant,
@@ -207,6 +310,6 @@ const TouchableWithoutFeedback = createReactClass({
       children,
     });
   }
-});
+}): any): React.ComponentType<Props>);
 
 module.exports = TouchableWithoutFeedback;

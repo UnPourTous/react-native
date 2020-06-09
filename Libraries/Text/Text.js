@@ -12,7 +12,6 @@
 'use strict';
 
 const ColorPropType = require('ColorPropType');
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
 const NativeMethodsMixin = require('NativeMethodsMixin');
 const Platform = require('Platform');
 const React = require('React');
@@ -28,6 +27,8 @@ const mergeFast = require('mergeFast');
 const processColor = require('processColor');
 
 const stylePropType = StyleSheetPropType(TextStylePropTypes);
+
+const DeprecatedEdgeInsetsPropType = require('../DeprecatedPropTypes/DeprecatedEdgeInsetsPropType');
 
 const viewConfig = {
   validAttributes: mergeFast(ReactNativeViewAttributes.UIView, {
@@ -346,7 +347,7 @@ const Text = createReactClass({
      * reactivated! Move it back and forth several times while the scroll view
      * is disabled. Ensure you pass in a constant to reduce memory allocations.
      */
-    pressRetentionOffset: EdgeInsetsPropType,
+    pressRetentionOffset: DeprecatedEdgeInsetsPropType,
     /**
      * Lets the user select text, to use the native copy and paste functionality.
      */

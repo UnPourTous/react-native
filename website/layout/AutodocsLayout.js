@@ -91,7 +91,7 @@ function renderBaseType(type) {
     if (type.raw === 'ColorPropType') {
       return <a href={'docs/colors.html'}>color</a>;
     }
-    if (type.raw === 'EdgeInsetsPropType') {
+    if (type.raw === 'EdgeInsetsPropType' || type.raw === 'DeprecatedEdgeInsetsPropType') {
       return '{top: number, left: number, bottom: number, right: number}';
     }
     return type.raw;

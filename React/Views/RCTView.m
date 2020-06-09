@@ -17,6 +17,8 @@
 #import "UIView+React.h"
 #import "RCTI18nUtil.h"
 
+UIAccessibilityTraits const SwitchAccessibilityTrait = 0x20000000000001;
+
 @implementation UIView (RCTViewUnmounting)
 
 - (void)react_remountAllSubviews
@@ -95,12 +97,14 @@ static NSString *RCTRecursiveAccessibilityLabel(UIView *view)
       [str appendString:label];
     }
   }
-  return str;
+  return str.length == 0 ? nil : str;
 }
 
 @implementation RCTView
 {
   UIColor *_backgroundColor;
+  NSMutableDictionary<NSString *, NSDictionary *> *accessibilityActionsNameMap;
+  NSMutableDictionary<NSString *, NSDictionary *> *accessibilityActionsLabelMap;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -149,10 +153,154 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
 
 - (NSString *)accessibilityLabel
 {
-  if (super.accessibilityLabel) {
-    return super.accessibilityLabel;
+  NSString *label = super.accessibilityLabel;
+  if (label) {
+    return label;
   }
   return RCTRecursiveAccessibilityLabel(self);
+}
+
+- (NSArray <UIAccessibilityCustomAction *> *)accessibilityCustomActions
+{
+  if (!self.accessibilityActions.count) {
+    return nil;
+  }
+
+  accessibilityActionsNameMap = [[NSMutableDictionary alloc] init];
+  accessibilityActionsLabelMap = [[NSMutableDictionary alloc] init];
+  NSMutableArray *actions = [NSMutableArray array];
+  for (NSDictionary *action in self.accessibilityActions) {
+    if (action[@"name"]) {
+      accessibilityActionsNameMap[action[@"name"]] = action;
+    }
+    if (action[@"label"]) {
+      accessibilityActionsLabelMap[action[@"label"]] = action;
+      [actions addObject:[[UIAccessibilityCustomAction alloc] initWithName:action[@"label"]
+                                                                    target:self
+                                                                  selector:@selector(didActivateAccessibilityCustomAction:)]];
+    }
+  }
+
+  return [actions copy];
+}
+
+- (BOOL)didActivateAccessibilityCustomAction:(UIAccessibilityCustomAction *)action
+{
+  if (!_onAccessibilityAction || !accessibilityActionsLabelMap) {
+    return NO;
+  }
+
+  // iOS defines the name as the localized label, so use our map to convert this back to the non-localized action namne when passing to JS. This allows for standard action names across platforms.
+
+  NSDictionary *actionObject = accessibilityActionsLabelMap[action.name];
+  if (actionObject) {
+    _onAccessibilityAction(@{
+      @"actionName": actionObject[@"name"],
+      @"actionTarget": self.reactTag
+    });
+  }
+  return YES;
+}
+
+- (NSString *)accessibilityValue
+{
+  if ((self.accessibilityTraits & SwitchAccessibilityTrait) == SwitchAccessibilityTrait) {
+    for (NSString *state in self.accessibilityState) {
+      id val = self.accessibilityState[state];
+      if (!val) {
+        continue;
+      }
+      if ([state isEqualToString:@"checked"] && [val isKindOfClass:[NSNumber class]]) {
+        return [val boolValue] ? @"1" : @"0";
+      }
+    }
+  }
+  NSMutableArray *valueComponents = [NSMutableArray new];
+  static NSDictionary<NSString *, NSString *> *roleDescriptions = nil;
+  static dispatch_once_t onceToken1;
+  dispatch_once(&onceToken1, ^{
+    roleDescriptions = @{
+                         @"adjustable" : @"滑块",
+                         @"alert" : @"提醒",
+                         @"checkbox" : @"复选框",
+                         @"combobox" : @"弹出式按钮",
+                         @"imagebutton" : @"图像按钮",
+                         @"keyboardkey" : @"键盘按钮",
+                         @"menu" : @"菜单",
+                         @"menubar" : @"菜单栏",
+                         @"menuitem" : @"菜单项",
+                         @"progressbar" : @"进度指示器",
+                         @"radio" : @"单选框",
+                         @"radiogroup" : @"单选框组",
+                         @"scrollbar" : @"滚动条",
+                         @"spinbutton" : @"微调按钮",
+                         @"summary" : @"摘要",
+                         @"switch" : @"switch",
+                         @"tab" : @"标签页",
+                         @"tablist" : @"标签页列表",
+                         @"timer" : @"定时器",
+                         @"toolbar" : @"工具栏",
+                         };
+  });
+  static NSDictionary<NSString *, NSString *> *stateDescriptions = nil;
+  static dispatch_once_t onceToken2;
+  dispatch_once(&onceToken2, ^{
+    stateDescriptions = @{
+                          @"checked" : @"已勾选",
+                          @"unchecked" : @"未勾选",
+                          @"busy" : @"正忙",
+                          @"expanded" : @"已展开",
+                          @"collapsed" : @"已收起",
+                          @"mixed": @"mixed",
+                          };
+  });
+  NSString *roleDescription = self.accessibilityRole ? roleDescriptions[self.accessibilityRole]: nil;
+  if (roleDescription) {
+    [valueComponents addObject:roleDescription];
+  }
+  for (NSString *state in self.accessibilityState) {
+    id val = self.accessibilityState[state];
+    if (!val) {
+      continue;
+    }
+    if ([state isEqualToString:@"checked"]) {
+      if ([val isKindOfClass:[NSNumber class]]) {
+        [valueComponents addObject:stateDescriptions[[val boolValue] ? @"checked" : @"unchecked"]];
+      } else if ([val isKindOfClass:[NSString class]] && [val isEqualToString:@"mixed"]) {
+        [valueComponents addObject:stateDescriptions[@"mixed"]];
+      }
+    }
+    if ([state isEqualToString:@"expanded"] && [val isKindOfClass:[NSNumber class]]) {
+      [valueComponents addObject:stateDescriptions[[val boolValue] ? @"expanded" : @"collapsed"]];
+    }
+    if ([state isEqualToString:@"busy"] && [val isKindOfClass:[NSNumber class]] && [val boolValue]) {
+      [valueComponents addObject:stateDescriptions[@"busy"]];
+    }
+  }
+
+  // handle accessibilityValue
+
+  if (self.accessibilityValueInternal) {
+    id min = self.accessibilityValueInternal[@"min"];
+    id now = self.accessibilityValueInternal[@"now"];
+    id max = self.accessibilityValueInternal[@"max"];
+    id text = self.accessibilityValueInternal[@"text"];
+    if (text && [text isKindOfClass:[NSString class]]) {
+      [valueComponents addObject:text];
+    } else if ([min isKindOfClass:[NSNumber class]] &&
+        [now isKindOfClass:[NSNumber class]] &&
+        [max isKindOfClass:[NSNumber class]] &&
+        ([min intValue] < [max intValue]) &&
+        ([min intValue] <= [now intValue] && [now intValue] <= [max intValue])) {
+      int val = ([now intValue]*100)/([max intValue]-[min intValue]);
+      [valueComponents addObject:[NSString stringWithFormat:@"%d percent", val]];
+    }
+  }
+
+  if (valueComponents.count > 0) {
+    return [valueComponents componentsJoinedByString:@", "];
+  }
+  return nil;
 }
 
 - (void)setPointerEvents:(RCTPointerEvents)pointerEvents
@@ -235,9 +383,24 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
   return NO;
 }
 
+- (BOOL)performAccessibilityAction:(NSString *) name
+{
+  if (_onAccessibilityAction && accessibilityActionsNameMap[name]) {
+    _onAccessibilityAction(@{
+                             @"actionName" : name,
+                             @"actionTarget" : self.reactTag
+                             });
+    return YES;
+  }
+  return NO;
+}
+
 - (BOOL)accessibilityActivate
 {
-  if (_onAccessibilityTap) {
+  if ([self performAccessibilityAction:@"activate"]) {
+    return YES;
+  }
+  else if (_onAccessibilityTap) {
     _onAccessibilityTap(nil);
     return YES;
   } else {
@@ -247,12 +410,24 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
 
 - (BOOL)accessibilityPerformMagicTap
 {
-  if (_onMagicTap) {
+  if ([self performAccessibilityAction:@"magicTap"]) {
+    return YES;
+  } else if (_onMagicTap) {
     _onMagicTap(nil);
     return YES;
   } else {
     return NO;
   }
+}
+
+- (void)accessibilityIncrement
+{
+  [self performAccessibilityAction:@"increment"];
+}
+
+- (void)accessibilityDecrement
+{
+  [self performAccessibilityAction:@"decrement"];
 }
 
 - (NSString *)description

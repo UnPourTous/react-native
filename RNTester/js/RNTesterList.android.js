@@ -129,6 +129,10 @@ const ComponentExamples: Array<RNTesterExample> = [
 
 const APIExamples: Array<RNTesterExample> = [
   {
+    key: 'AccessibilityExample',
+    module: require('./AccessibilityExample'),
+  },
+  {
     key: 'AccessibilityAndroidExample',
     module: require('./AccessibilityAndroidExample'),
   },

@@ -42,6 +42,10 @@ class PickerItem extends React.Component<{
  value?: any,
  color?: ColorPropType,
  testID?: string,
+  /**
+   * The string used for the accessibility label. Will be read once focused on the picker but not on change.
+   */
+  accessibilityLabel?: ?string,
 }> {
  static propTypes = {
    /**

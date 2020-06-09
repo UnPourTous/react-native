@@ -136,6 +136,8 @@ import java.util.Map;
       MapBuilder.of(
           "typeWindowStateChanged",
           AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+          "typeViewFocused",
+          AccessibilityEvent.TYPE_VIEW_FOCUSED,
           "typeViewClicked",
           AccessibilityEvent.TYPE_VIEW_CLICKED));
 

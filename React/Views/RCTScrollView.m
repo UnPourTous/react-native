@@ -315,7 +315,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
 
   UIEdgeInsets contentInset = self.contentInset;
   CGSize contentSize = self.contentSize;
-  
+
   // If contentSize has not been measured yet we can't check bounds.
   if (CGSizeEqualToSize(contentSize, CGSizeZero)) {
     self.contentOffset = originalOffset;
@@ -352,6 +352,11 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
   self.pinchGestureRecognizer.enabled = _pinchGestureEnabled;
 }
 #endif //TARGET_OS_TV
+
+- (BOOL)shouldGroupAccessibilityChildren
+{
+  return YES;
+}
 
 @end
 

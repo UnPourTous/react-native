@@ -37,6 +37,25 @@
   objc_setAssociatedObject(self, @selector(nativeID), nativeID, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (BOOL)shouldAccessibilityIgnoresInvertColors
+{
+#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000 /* __IPHONE_11_0 */
+    if (@available(iOS 11.0, *)) {
+        return self.accessibilityIgnoresInvertColors;
+    }
+#endif
+    return NO;
+}
+
+- (void)setShouldAccessibilityIgnoresInvertColors:(BOOL)shouldAccessibilityIgnoresInvertColors
+{
+#if defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000 /* __IPHONE_11_0 */
+    if (@available(iOS 11.0, *)) {
+        self.accessibilityIgnoresInvertColors = shouldAccessibilityIgnoresInvertColors;
+    }
+#endif
+}
+
 #if RCT_DEV
 
 - (RCTShadowView *)_DEBUG_reactShadowView
@@ -293,6 +312,45 @@
 - (UIView *)reactAccessibilityElement
 {
   return self;
+}
+
+- (NSArray<NSDictionary *> *)accessibilityActions
+{
+  return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void)setAccessibilityActions:(NSArray<NSDictionary *> *)accessibilityActions
+{
+  objc_setAssociatedObject(self, @selector(accessibilityActions), accessibilityActions, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSString *)accessibilityRole
+{
+  return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void)setAccessibilityRole:(NSString *)accessibilityRole
+{
+  objc_setAssociatedObject(self, @selector(accessibilityRole), accessibilityRole, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSDictionary<NSString *, id> *)accessibilityState
+{
+  return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void)setAccessibilityState:(NSDictionary<NSString *, id> *)accessibilityState
+{
+  objc_setAssociatedObject(self, @selector(accessibilityState), accessibilityState, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSDictionary<NSString *, id> *)accessibilityValueInternal
+{
+  return objc_getAssociatedObject(self, _cmd);
+}
+- (void)setAccessibilityValueInternal:(NSDictionary<NSString *, id> *)accessibilityValue
+{
+  objc_setAssociatedObject(self, @selector(accessibilityValueInternal), accessibilityValue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

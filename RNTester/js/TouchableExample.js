@@ -56,7 +56,6 @@ exports.examples = [
           <TouchableHighlight
             style={styles.wrapper}
             activeOpacity={1}
-            animationVelocity={0}
             underlayColor="rgb(210, 230, 255)"
             onPress={() => console.log('custom THW text - highlight')}>
             <View style={styles.wrapperCustom}>
@@ -185,8 +184,7 @@ class TouchableFeedbackEvents extends React.Component<{}, $FlowFixMeState> {
             style={styles.wrapper}
             testID="touchable_feedback_events_button"
             accessibilityLabel="touchable feedback events"
-            accessibilityTraits="button"
-            accessibilityComponentType="button"
+            accessibilityRole="button"
             onPress={() => this._appendEvent('press')}
             onPressIn={() => this._appendEvent('pressIn')}
             onPressOut={() => this._appendEvent('pressOut')}
@@ -341,7 +339,6 @@ class TouchableDisabled extends React.Component<{}> {
         <TouchableHighlight
           activeOpacity={1}
           disabled={true}
-          animationVelocity={0}
           underlayColor="rgb(210, 230, 255)"
           style={[styles.row, styles.block]}
           onPress={() => console.log('custom THW text - highlight')}>
@@ -352,7 +349,6 @@ class TouchableDisabled extends React.Component<{}> {
 
         <TouchableHighlight
           activeOpacity={1}
-          animationVelocity={0}
           underlayColor="rgb(210, 230, 255)"
           style={[styles.row, styles.block]}
           onPress={() => console.log('custom THW text - highlight')}>

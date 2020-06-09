@@ -32,6 +32,7 @@ static void collectNonTextDescendants(RCTText *view, NSMutableArray *nonTextDesc
   NSTextStorage *_textStorage;
   CAShapeLayer *_highlightLayer;
   UILongPressGestureRecognizer *_longPressGestureRecognizer;
+  NSMutableDictionary<NSString *, NSDictionary *> *accessibilityActionsNameMap;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -199,6 +200,48 @@ static void collectNonTextDescendants(RCTText *view, NSMutableArray *nonTextDesc
     return superAccessibilityLabel;
   }
   return _textStorage.string;
+}
+
+- (NSArray <UIAccessibilityCustomAction *> *)accessibilityCustomActions
+{
+  if (!self.accessibilityActions.count) {
+    return nil;
+  }
+
+  accessibilityActionsNameMap = [[NSMutableDictionary alloc] init];
+  NSMutableArray *actions = [NSMutableArray array];
+  for (NSDictionary *action in self.accessibilityActions) {
+    if (action[@"name"]) {
+      accessibilityActionsNameMap[action[@"name"]] = action;
+    }
+  }
+
+  return [actions copy];
+}
+
+- (BOOL)performAccessibilityAction:(NSString *) name
+{
+  if (_onAccessibilityAction && accessibilityActionsNameMap[name]) {
+    _onAccessibilityAction(@{
+                             @"actionName" : name,
+                             @"actionTarget" : self.reactTag
+                             });
+    return YES;
+  }
+  return NO;
+}
+
+- (BOOL)accessibilityActivate
+{
+  if ([self performAccessibilityAction:@"activate"]) {
+    return YES;
+  }
+  else if (_onAccessibilityTap) {
+    _onAccessibilityTap(nil);
+    return YES;
+  } else {
+    return NO;
+  }
 }
 
 #pragma mark - Context Menu

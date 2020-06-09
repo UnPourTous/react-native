@@ -11,7 +11,6 @@
  */
 'use strict';
 
-const EdgeInsetsPropType = require('EdgeInsetsPropType');
 const ImageResizeMode = require('ImageResizeMode');
 const ImageSourcePropType = require('ImageSourcePropType');
 const ImageStylePropTypes = require('ImageStylePropTypes');
@@ -29,6 +28,8 @@ const requireNativeComponent = require('requireNativeComponent');
 const resolveAssetSource = require('resolveAssetSource');
 
 const ImageViewManager = NativeModules.ImageViewManager;
+
+const DeprecatedEdgeInsetsPropType = require('../DeprecatedPropTypes/DeprecatedEdgeInsetsPropType');
 
 /**
  * A React component for displaying different types of images,
@@ -202,7 +203,7 @@ const Image = createReactClass({
      *
      * @platform ios
      */
-    capInsets: EdgeInsetsPropType,
+    capInsets: DeprecatedEdgeInsetsPropType,
     /**
      * The mechanism that should be used to resize the image when the image's dimensions
      * differ from the image view's dimensions. Defaults to `auto`.

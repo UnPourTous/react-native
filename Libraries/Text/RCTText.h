@@ -9,11 +9,19 @@
 
 #import <UIKit/UIKit.h>
 
+#import <React/RCTView.h>
+
 @interface RCTText : UIView
 
 @property (nonatomic, assign) UIEdgeInsets contentInset;
 @property (nonatomic, strong) NSTextStorage *textStorage;
 @property (nonatomic, assign) CGRect textFrame;
 @property (nonatomic, assign) BOOL selectable;
+
+/**
+ * Accessibility event handlers
+ */
+@property (nonatomic, copy) RCTDirectEventBlock onAccessibilityAction;
+@property (nonatomic, copy) RCTDirectEventBlock onAccessibilityTap;
 
 @end

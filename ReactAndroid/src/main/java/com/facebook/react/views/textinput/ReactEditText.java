@@ -14,6 +14,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
@@ -28,10 +29,13 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.support.v4.view.AccessibilityDelegateCompat;
+import android.support.v4.view.ViewCompat;
 import com.facebook.infer.annotation.Assertions;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
@@ -63,8 +67,8 @@ public class ReactEditText extends EditText {
   // listeners and adding them back again after the text change is completed.
   private boolean mIsSettingTextFromJS;
   // This component is controlled, so we want it to get focused only when JS ask it to do so.
-  // Whenever android requests focus (which it does for random reasons), it will be ignored.
-  private boolean mIsJSSettingFocus;
+  // Whenever android requests focus, except for accessibility click, it will be ignored.
+  private boolean mShouldAllowFocus;
   private int mDefaultGravityHorizontal;
   private int mDefaultGravityVertical;
   private int mNativeEventCount;
@@ -99,7 +103,7 @@ public class ReactEditText extends EditText {
     mNativeEventCount = 0;
     mMostRecentEventCount = 0;
     mIsSettingTextFromJS = false;
-    mIsJSSettingFocus = false;
+    mShouldAllowFocus = false;
     mBlurOnSubmit = null;
     mDisableFullscreen = false;
     mListeners = null;
@@ -107,6 +111,19 @@ public class ReactEditText extends EditText {
     mStagedInputType = getInputType();
     mKeyListener = new InternalKeyListener();
     mScrollWatcher = null;
+
+    ViewCompat.setAccessibilityDelegate(this, new AccessibilityDelegateCompat() {
+      @Override
+      public boolean performAccessibilityAction(View host, int action, Bundle args) {
+        if (action == AccessibilityNodeInfo.ACTION_CLICK) {
+          mShouldAllowFocus = true;
+          requestFocus();
+          mShouldAllowFocus = false;
+          return true;
+        }
+        return super.performAccessibilityAction(host, action, args);
+      }
+    });
   }
 
   // After the text changes inside an EditText, TextView checks if a layout() has been requested.
@@ -194,9 +211,11 @@ public class ReactEditText extends EditText {
     if (isFocused()) {
       return true;
     }
-    if (!mIsJSSettingFocus) {
+
+    if (!mShouldAllowFocus) {
       return false;
     }
+
     setFocusableInTouchMode(true);
     boolean focused = super.requestFocus(direction, previouslyFocusedRect);
     showSoftKeyboard();
@@ -326,9 +345,9 @@ public class ReactEditText extends EditText {
 
   // VisibleForTesting from {@link TextInputEventsTestCase}.
   public void requestFocusFromJS() {
-    mIsJSSettingFocus = true;
+    mShouldAllowFocus = true;
     requestFocus();
-    mIsJSSettingFocus = false;
+    mShouldAllowFocus = false;
   }
 
   /* package */ void clearFocusFromJS() {

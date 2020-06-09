@@ -35,9 +35,11 @@ RCT_MULTI_ENUM_CONVERTER(UIAccessibilityTraits, (@{
   @"header": @(UIAccessibilityTraitHeader),
   @"search": @(UIAccessibilityTraitSearchField),
   @"image": @(UIAccessibilityTraitImage),
+  @"imagebutton": @(UIAccessibilityTraitImage | UIAccessibilityTraitButton),
   @"selected": @(UIAccessibilityTraitSelected),
   @"plays": @(UIAccessibilityTraitPlaysSound),
   @"key": @(UIAccessibilityTraitKeyboardKey),
+  @"keyboardkey": @(UIAccessibilityTraitKeyboardKey),
   @"text": @(UIAccessibilityTraitStaticText),
   @"summary": @(UIAccessibilityTraitSummaryElement),
   @"disabled": @(UIAccessibilityTraitNotEnabled),
@@ -46,6 +48,22 @@ RCT_MULTI_ENUM_CONVERTER(UIAccessibilityTraits, (@{
   @"adjustable": @(UIAccessibilityTraitAdjustable),
   @"allowsDirectInteraction": @(UIAccessibilityTraitAllowsDirectInteraction),
   @"pageTurn": @(UIAccessibilityTraitCausesPageTurn),
+  @"alert": @(UIAccessibilityTraitNone),
+  @"checkbox": @(UIAccessibilityTraitNone),
+  @"combobox": @(UIAccessibilityTraitNone),
+  @"menu": @(UIAccessibilityTraitNone),
+  @"menubar": @(UIAccessibilityTraitNone),
+  @"menuitem": @(UIAccessibilityTraitNone),
+  @"progressbar": @(UIAccessibilityTraitNone),
+  @"radio": @(UIAccessibilityTraitNone),
+  @"radiogroup": @(UIAccessibilityTraitNone),
+  @"scrollbar": @(UIAccessibilityTraitNone),
+  @"spinbutton": @(UIAccessibilityTraitNone),
+  @"switch": @(SwitchAccessibilityTrait),
+  @"tab": @(UIAccessibilityTraitNone),
+  @"tablist": @(UIAccessibilityTraitNone),
+  @"timer": @(UIAccessibilityTraitNone),
+  @"toolbar": @(UIAccessibilityTraitNone),
 }), UIAccessibilityTraitNone, unsignedLongLongValue)
 
 @end
@@ -119,9 +137,13 @@ RCT_EXPORT_VIEW_PROPERTY(nativeID, NSString)
 
 // Acessibility related properties
 RCT_REMAP_VIEW_PROPERTY(accessible, reactAccessibilityElement.isAccessibilityElement, BOOL)
+RCT_REMAP_VIEW_PROPERTY(accessibilityActions, reactAccessibilityElement.accessibilityActions, NSDictionaryArray)
 RCT_REMAP_VIEW_PROPERTY(accessibilityLabel, reactAccessibilityElement.accessibilityLabel, NSString)
-RCT_REMAP_VIEW_PROPERTY(accessibilityTraits, reactAccessibilityElement.accessibilityTraits, UIAccessibilityTraits)
+RCT_REMAP_VIEW_PROPERTY(accessibilityValue, reactAccessibilityElement.accessibilityValueInternal, NSDictionary)
 RCT_REMAP_VIEW_PROPERTY(accessibilityViewIsModal, reactAccessibilityElement.accessibilityViewIsModal, BOOL)
+RCT_REMAP_VIEW_PROPERTY(accessibilityElementsHidden, reactAccessibilityElement.accessibilityElementsHidden, BOOL)
+RCT_REMAP_VIEW_PROPERTY(accessibilityIgnoresInvertColors, reactAccessibilityElement.shouldAccessibilityIgnoresInvertColors, BOOL)
+RCT_REMAP_VIEW_PROPERTY(onAccessibilityAction, reactAccessibilityElement.onAccessibilityAction, RCTDirectEventBlock)
 RCT_REMAP_VIEW_PROPERTY(onAccessibilityTap, reactAccessibilityElement.onAccessibilityTap, RCTDirectEventBlock)
 RCT_REMAP_VIEW_PROPERTY(onMagicTap, reactAccessibilityElement.onMagicTap, RCTDirectEventBlock)
 RCT_REMAP_VIEW_PROPERTY(testID, reactAccessibilityElement.accessibilityIdentifier, NSString)
@@ -152,6 +174,56 @@ RCT_CUSTOM_VIEW_PROPERTY(transform, CATransform3D, RCTView)
   view.layer.transform = json ? [RCTConvert CATransform3D:json] : defaultView.layer.transform;
   // TODO: Improve this by enabling edge antialiasing only for transforms with rotation or skewing
   view.layer.allowsEdgeAntialiasing = !CATransform3DIsIdentity(view.layer.transform);
+}
+
+RCT_CUSTOM_VIEW_PROPERTY(accessibilityRole, UIAccessibilityTraits, RCTView)
+{
+  const UIAccessibilityTraits AccessibilityRolesMask = UIAccessibilityTraitNone | UIAccessibilityTraitButton | UIAccessibilityTraitLink | UIAccessibilityTraitSearchField | UIAccessibilityTraitImage | UIAccessibilityTraitKeyboardKey | UIAccessibilityTraitStaticText | UIAccessibilityTraitAdjustable | UIAccessibilityTraitHeader | UIAccessibilityTraitSummaryElement | SwitchAccessibilityTrait;
+  view.reactAccessibilityElement.accessibilityTraits = view.reactAccessibilityElement.accessibilityTraits & ~AccessibilityRolesMask;
+  UIAccessibilityTraits newTraits = json ? [RCTConvert UIAccessibilityTraits:json] : defaultView.accessibilityTraits;
+  if (newTraits != UIAccessibilityTraitNone) {
+    UIAccessibilityTraits maskedTraits = newTraits & AccessibilityRolesMask;
+    view.reactAccessibilityElement.accessibilityTraits |= maskedTraits;
+  } else {
+    NSString *role = json ? [RCTConvert NSString:json] : @"";
+    view.reactAccessibilityElement.accessibilityRole = role;
+  }
+}
+
+RCT_CUSTOM_VIEW_PROPERTY(accessibilityState, NSDictionary, RCTView)
+{
+  NSDictionary<NSString *, id> *state = json ? [RCTConvert NSDictionary:json] : nil;
+  NSMutableDictionary<NSString *, id> *newState = [[NSMutableDictionary<NSString *, id> alloc] init];
+
+  if (!state) {
+    return;
+  }
+
+  const UIAccessibilityTraits AccessibilityStatesMask = UIAccessibilityTraitNotEnabled | UIAccessibilityTraitSelected;
+  view.reactAccessibilityElement.accessibilityTraits = view.reactAccessibilityElement.accessibilityTraits & ~AccessibilityStatesMask;
+
+  for (NSString *s in state) {
+    id val = [state objectForKey:s];
+    if (!val) {
+      continue;
+    }
+    if ([s isEqualToString:@"selected"] && [val isKindOfClass:[NSNumber class]] && [val boolValue]) {
+      view.reactAccessibilityElement.accessibilityTraits |= UIAccessibilityTraitSelected;
+    } else if ([s isEqualToString:@"disabled"] && [val isKindOfClass:[NSNumber class]] && [val boolValue]) {
+      view.reactAccessibilityElement.accessibilityTraits |= UIAccessibilityTraitNotEnabled;
+    } else {
+      newState[s] = val;
+    }
+  }
+  if (newState.count > 0) {
+    view.reactAccessibilityElement.accessibilityState = newState;
+    // Post a layout change notification to make sure VoiceOver get notified for the state
+    // changes that don't happen upon users' click.
+    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil);
+  } else {
+    view.reactAccessibilityElement.accessibilityState = nil;
+  }
+
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(pointerEvents, RCTPointerEvents, RCTView)

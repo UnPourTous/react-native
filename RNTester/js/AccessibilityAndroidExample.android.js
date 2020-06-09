@@ -13,11 +13,9 @@
 var React = require('react');
 var ReactNative = require('react-native');
 var {
-  AccessibilityInfo,
   StyleSheet,
   Text,
   View,
-  ToastAndroid,
   TouchableWithoutFeedback,
 } = ReactNative;
 
@@ -27,40 +25,11 @@ var RNTesterPage = require('./RNTesterPage');
 var importantForAccessibilityValues = ['auto', 'yes', 'no', 'no-hide-descendants'];
 
 class AccessibilityAndroidExample extends React.Component {
-  static title = 'Accessibility';
-  static description = 'Examples of using Accessibility API.';
-
   state = {
     count: 0,
     backgroundImportantForAcc: 0,
     forgroundImportantForAcc: 0,
-    screenReaderEnabled: false,
   };
-
-  componentDidMount() {
-    AccessibilityInfo.addEventListener(
-      'change',
-      this._handleScreenReaderToggled
-    );
-    AccessibilityInfo.fetch().done((isEnabled) => {
-      this.setState({
-        screenReaderEnabled: isEnabled
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    AccessibilityInfo.removeEventListener(
-      'change',
-      this._handleScreenReaderToggled
-    );
-  }
-
-  _handleScreenReaderToggled = (isEnabled) => {
-    this.setState({
-      screenReaderEnabled: isEnabled,
-    });
-  }
 
   _addOne = () => {
     this.setState({
@@ -82,53 +51,7 @@ class AccessibilityAndroidExample extends React.Component {
 
   render() {
     return (
-      <RNTesterPage title={'Accessibility'}>
-
-        <RNTesterBlock title="Nonaccessible view with TextViews">
-          <View>
-            <Text style={{color: 'green',}}>
-              This is
-            </Text>
-            <Text style={{color: 'blue'}}>
-              nontouchable normal view.
-            </Text>
-          </View>
-        </RNTesterBlock>
-
-        <RNTesterBlock title="Accessible view with TextViews wihout label">
-          <View accessible={true}>
-            <Text style={{color: 'green',}}>
-              This is
-            </Text>
-            <Text style={{color: 'blue'}}>
-              nontouchable accessible view without label.
-            </Text>
-          </View>
-        </RNTesterBlock>
-
-        <RNTesterBlock title="Accessible view with TextViews with label">
-          <View accessible={true}
-            accessibilityLabel="I have label, so I read it instead of embedded text.">
-            <Text style={{color: 'green',}}>
-              This is
-            </Text>
-            <Text style={{color: 'blue'}}>
-              nontouchable accessible view with label.
-            </Text>
-          </View>
-        </RNTesterBlock>
-
-        <RNTesterBlock title="Touchable with component type = button">
-          <TouchableWithoutFeedback
-            onPress={() => ToastAndroid.show('Toasts work by default', ToastAndroid.SHORT)}
-            accessibilityComponentType="button">
-            <View style={styles.embedded}>
-              <Text>Click me</Text>
-              <Text>Or not</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        </RNTesterBlock>
-
+      <RNTesterPage title={'Accessibility Android APIs'}>
         <RNTesterBlock title="LiveRegion">
           <TouchableWithoutFeedback onPress={this._addOne}>
             <View style={styles.embedded}>
@@ -140,15 +63,9 @@ class AccessibilityAndroidExample extends React.Component {
           </Text>
         </RNTesterBlock>
 
-        <RNTesterBlock title="Check if the screen reader is enabled">
-          <Text>
-            The screen reader is {this.state.screenReaderEnabled ? 'enabled' : 'disabled'}.
-          </Text>
-        </RNTesterBlock>
-
         <RNTesterBlock title="Overlapping views and importantForAccessibility property">
           <View style={styles.container}>
-            <View
+            <TouchableWithoutFeedback
               style={{
                 position: 'absolute',
                 left: 10,
@@ -165,7 +82,7 @@ class AccessibilityAndroidExample extends React.Component {
                   Hello
                 </Text>
               </View>
-            </View>
+            </TouchableWithoutFeedback>
             <View
               style={{
                 position: 'absolute',
@@ -235,4 +152,13 @@ var styles = StyleSheet.create({
   },
 });
 
-module.exports = AccessibilityAndroidExample;
+exports.title = 'AccessibilityAndroid';
+exports.description = 'Android specific Accessibility APIs.';
+exports.examples = [
+  {
+    title: 'Accessibility elements',
+    render(): React.Element<typeof AccessibilityAndroidExample> {
+      return <AccessibilityAndroidExample />;
+    },
+  },
+];

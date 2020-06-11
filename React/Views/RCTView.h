@@ -23,6 +23,11 @@ extern const UIAccessibilityTraits SwitchAccessibilityTrait;
 @interface RCTView : UIView
 
 /**
+* Accessibility properties
+*/
+@property (nonatomic, assign) BOOL accessibilityPenetrating;
+
+/**
  * Accessibility event handlers
  */
 @property (nonatomic, copy) RCTDirectEventBlock onAccessibilityAction;

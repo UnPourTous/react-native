@@ -16,7 +16,8 @@ var ReactNative = require('react-native');
 var {
   Text,
   View,
-  Alert
+  Alert,
+  TouchableWithoutFeedback
 } = ReactNative;
 
 const RNTesterBlock = require('./RNTesterBlock');
@@ -26,6 +27,18 @@ class AccessibilityIOSExample extends React.Component<Props> {
   render() {
     return (
       <RNTesterBlock title="Accessibility iOS APIs">
+        <View style={{paddingVertical: 20, backgroundColor: 'red'}} accessible={true} accessibilityPenetrated={true}>
+          <TouchableWithoutFeedback>
+            <View style={{ paddingVertical: 20, backgroundColor: 'green'}}>
+              <Text>First Inner Element</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback>
+            <View style={{ paddingVertical: 20, marginTop: 20, backgroundColor: 'yellow'}}>
+              <Text>Second Inner Element</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
         <View
           onAccessibilityAction={event => {
             if (event.nativeEvent.actionName === 'activate') {

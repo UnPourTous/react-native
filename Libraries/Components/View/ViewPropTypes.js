@@ -360,6 +360,15 @@ type IOSViewProps = $ReadOnly<{|
   accessibilityElementsHidden?: ?boolean,
 
   /**
+   * A value indicating whether the accessibility element can be penetrated
+   * and expose its children.
+   *
+   * @platform ios
+   *
+   */
+  accessibilityPenetrated?: ?boolean,
+
+  /**
    * Whether this `View` should be rendered as a bitmap before compositing.
    *
    * @platform ios

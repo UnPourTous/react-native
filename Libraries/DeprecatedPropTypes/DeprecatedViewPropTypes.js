@@ -109,6 +109,15 @@ module.exports = {
   accessibilityElementsHidden: PropTypes.bool,
 
   /**
+   * A value indicating whether the accessibility element can be penetrated
+   * and expose its children.
+   *
+   * @platform ios
+   *
+   */
+  accessibilityPenetrated: PropTypes.bool,
+
+  /**
    * When `accessible` is true, the system will try to invoke this function
    * when the user performs an accessibility custom action.
    *

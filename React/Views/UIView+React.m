@@ -353,4 +353,14 @@
   objc_setAssociatedObject(self, @selector(accessibilityValueInternal), accessibilityValue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (BOOL)accessibilityPenetrated
+{
+  return [objc_getAssociatedObject(self, _cmd) boolValue];
+}
+
+- (void)setAccessibilityPenetrated:(BOOL)accessibilityPenetrated
+{
+  objc_setAssociatedObject(self, @selector(accessibilityPenetrated), @(accessibilityPenetrated), OBJC_ASSOCIATION_ASSIGN);
+}
+
 @end

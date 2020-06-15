@@ -51,7 +51,7 @@ const OVERRIDE_PROPS = [
   'accessibilityLiveRegion',
   'accessibilityViewIsModal',
   'accessibilityElementsHidden',
-  'accessibilityPenetrated',
+  'accessibilitySplitFocus',
   'hitSlop',
   'nativeID',
   'onBlur',
@@ -71,7 +71,7 @@ export type Props = $ReadOnly<{|
   accessibilityLiveRegion?: ?('none' | 'polite' | 'assertive'),
   accessibilityViewIsModal?: ?boolean,
   accessibilityElementsHidden?: ?boolean,
-  accessibilityPenetrated?: ?boolean,
+  accessibilitySplitFocus?: ?boolean,
   children?: ?React.Node,
   delayLongPress?: ?number,
   delayPressIn?: ?number,
@@ -161,13 +161,13 @@ const TouchableWithoutFeedback = ((createReactClass({
      */
     accessibilityElementsHidden: PropTypes.bool,
     /**
-     * A value indicating whether the accessibility element can be penetrated
-     * and expose its children.
+     * A value indicating whether the focus of a group of nested accessibility elements
+     * can be captured separately from their parent element.
      *
      * @platform ios
      *
      */
-    accessibilityPenetrated: PropTypes.bool,
+    accessibilitySplitFocus: PropTypes.bool,
     /**
      * If true, disable all interactions for this component.
      */

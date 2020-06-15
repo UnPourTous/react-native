@@ -27,18 +27,6 @@ class AccessibilityIOSExample extends React.Component<Props> {
   render() {
     return (
       <RNTesterBlock title="Accessibility iOS APIs">
-        <View style={{paddingVertical: 20, backgroundColor: 'red'}} accessible={true} accessibilityPenetrated={true}>
-          <TouchableWithoutFeedback>
-            <View style={{ paddingVertical: 20, backgroundColor: 'green'}}>
-              <Text>First Inner Element</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
-            <View style={{ paddingVertical: 20, marginTop: 20, backgroundColor: 'yellow'}}>
-              <Text>Second Inner Element</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
         <View
           onAccessibilityAction={event => {
             if (event.nativeEvent.actionName === 'activate') {
@@ -67,6 +55,22 @@ class AccessibilityIOSExample extends React.Component<Props> {
           <Text>
             This view's children are hidden from the accessibility tree
           </Text>
+        </View>
+        <View
+          style={{paddingVertical: 10, backgroundColor: 'green'}}
+          accessible={true}
+          accessibilitySplitFocus={true}>
+          <Text>Outer Element</Text>
+          <TouchableWithoutFeedback>
+            <View style={{ paddingVertical: 10, backgroundColor: 'red'}}>
+              <Text>First Inner Element</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback>
+            <View style={{ paddingVertical: 10, marginTop: 10, backgroundColor: 'red'}}>
+              <Text>Second Inner Element</Text>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
       </RNTesterBlock>
     );

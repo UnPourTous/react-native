@@ -121,7 +121,7 @@
 @property (nonatomic, copy) NSDictionary<NSString *, id> *accessibilityState;
 @property (nonatomic, copy) NSArray <NSDictionary *> *accessibilityActions;
 @property (nonatomic, copy) NSDictionary *accessibilityValueInternal;
-@property (nonatomic, assign) BOOL accessibilityPenetrated;
+@property (nonatomic, assign) BOOL accessibilitySplitFocus;
 
 #if RCT_DEV
 

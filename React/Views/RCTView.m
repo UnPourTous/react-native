@@ -369,8 +369,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
     CGRect hitFrame = UIEdgeInsetsInsetRect(self.bounds, self.hitTestEdgeInsets);
     result = CGRectContainsPoint(hitFrame, point);
   }
-  
-  if (result && self.accessibilityPenetrated) {
+
+  if (result && self.accessibilitySplitFocus) {
     NSArray<UIView *> *sortedSubviews = [self reactZIndexSortedSubviews];
     UIView *hitSubview = nil;
     for (UIView *subview in [sortedSubviews reverseObjectEnumerator]) {
@@ -380,9 +380,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
         break;
       }
     }
-    _accessibilityPenetrating = hitSubview != nil;
+    _shouldAbandonAccessibilityFocus = hitSubview != nil;
   }
-  
+
   return result;
 }
 
@@ -394,10 +394,10 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:unused)
 - (BOOL)isAccessibilityElement
 {
   if (self.reactAccessibilityElement == self) {
-    if (self.accessibilityPenetrated) {
-      return !_accessibilityPenetrating;
+    if ([super isAccessibilityElement]) {
+        return self.accessibilitySplitFocus ? !_shouldAbandonAccessibilityFocus : YES;
     } else {
-      return [super isAccessibilityElement];
+      return NO;
     }
   }
 

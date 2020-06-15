@@ -109,13 +109,13 @@ module.exports = {
   accessibilityElementsHidden: PropTypes.bool,
 
   /**
-   * A value indicating whether the accessibility element can be penetrated
-   * and expose its children.
+   * A value indicating whether the focus of a group of nested accessibility elements
+   * can be captured separately from their parent element.
    *
    * @platform ios
    *
    */
-  accessibilityPenetrated: PropTypes.bool,
+  accessibilitySplitFocus: PropTypes.bool,
 
   /**
    * When `accessible` is true, the system will try to invoke this function

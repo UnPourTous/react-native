@@ -249,7 +249,7 @@ var TouchableNativeFeedback = createReactClass({
       accessibilityLiveRegion: this.props.accessibilityLiveRegion,
       accessibilityViewIsModal: this.props.accessibilityViewIsModal,
       accessibilityElementsHidden: this.props.accessibilityElementsHidden,
-      accessibilityPenetrated: this.props.accessibilityPenetrated,
+      accessibilitySplitFocus: this.props.accessibilitySplitFocus,
       children,
       testID: this.props.testID,
       onLayout: this.props.onLayout,

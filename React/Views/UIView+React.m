@@ -353,14 +353,14 @@
   objc_setAssociatedObject(self, @selector(accessibilityValueInternal), accessibilityValue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)accessibilityPenetrated
+- (BOOL)accessibilitySplitFocus
 {
   return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
-- (void)setAccessibilityPenetrated:(BOOL)accessibilityPenetrated
+- (void)setAccessibilitySplitFocus:(BOOL)accessibilitySplitFocus
 {
-  objc_setAssociatedObject(self, @selector(accessibilityPenetrated), @(accessibilityPenetrated), OBJC_ASSOCIATION_ASSIGN);
+  objc_setAssociatedObject(self, @selector(accessibilitySplitFocus), @(accessibilitySplitFocus), OBJC_ASSOCIATION_ASSIGN);
 }
 
 @end

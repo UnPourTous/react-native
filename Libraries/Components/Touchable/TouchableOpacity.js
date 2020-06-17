@@ -263,6 +263,7 @@ var TouchableOpacity = createReactClass({
         hasTVPreferredFocus={this.props.hasTVPreferredFocus}
         tvParallaxProperties={this.props.tvParallaxProperties}
         hitSlop={this.props.hitSlop}
+        pointerEvents={this.props.pointerEvents}
         onStartShouldSetResponder={this.touchableHandleStartShouldSetResponder}
         onResponderTerminationRequest={this.touchableHandleResponderTerminationRequest}
         onResponderGrant={this.touchableHandleResponderGrant}

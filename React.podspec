@@ -58,8 +58,7 @@ Pod::Spec.new do |s|
                               "React/Views/RCTPicker*",
                               "React/Views/RCTRefreshControl*",
                               "React/Views/RCTSlider*",
-                              "React/Views/RCTSwitch*",
-                              "React/Views/RCTWebView*"
+                              "React/Views/RCTSwitch*"
     ss.header_dir           = "React"
     ss.framework            = "JavaScriptCore"
     ss.libraries            = "stdc++"

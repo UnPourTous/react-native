@@ -45,8 +45,7 @@ const components = [
   '../Libraries/Components/Touchable/TouchableWithoutFeedback.js',
   '../Libraries/Components/View/View.js',
   '../Libraries/Components/ViewPager/ViewPagerAndroid.android.js',
-  '../Libraries/Lists/VirtualizedList.js',
-  '../Libraries/Components/WebView/WebView.ios.js',
+  '../Libraries/Lists/VirtualizedList.js'
 ];
 
 const apis = [

@@ -13,5 +13,5 @@
   @"major": @(0), \
   @"minor": @(51), \
   @"patch": @(14), \
-  @"prerelease": @"rc.6", \
+  @"prerelease": [NSNull null], \
 }

@@ -431,7 +431,6 @@ class WebView extends React.Component {
   }
 
   render() {
-    debugger;
     if (!WebView.hasNativeAbility()) {
       return (
         <View style={styles.container}>

@@ -404,6 +404,10 @@ class WebView extends React.Component {
     scalesPageToFit: true,
   };
 
+  static hasNativeAbility () {
+    return !!RCTWebViewManager
+  }
+
   state = {
     viewState: WebViewState.IDLE,
     lastErrorEvent: (null: ?ErrorEvent),
@@ -416,7 +420,26 @@ class WebView extends React.Component {
     }
   }
 
+  _renderFailedContent() {
+    return (
+      <View style={[styles.dummy, this.props.style]}>
+        <Text style={styles.text}>
+          WebView is not supported on this platform!
+        </Text>
+      </View>
+    )
+  }
+
   render() {
+    debugger;
+    if (!WebView.hasNativeAbility()) {
+      return (
+        <View style={styles.container}>
+          { this._renderFailedContent() }
+        </View>
+      )
+    }
+
     var otherView = null;
 
     if (this.state.viewState === WebViewState.LOADING) {
@@ -665,6 +688,20 @@ var styles = StyleSheet.create({
   },
   webView: {
     backgroundColor: '#ffffff',
+  },
+  dummy: {
+    width: 120,
+    height: 20,
+    backgroundColor: '#ffbcbc',
+    borderWidth: 1,
+    borderColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    color: '#333333',
+    margin: 5,
+    fontSize: 10,
   }
 });
 

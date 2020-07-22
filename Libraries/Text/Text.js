@@ -552,6 +552,12 @@ const Text = createReactClass({
         style: [this.props.style, {color: 'magenta'}],
       };
     }
+    if (Platform.OS === 'android') {
+      newProps = {
+        ...newProps,
+        style: [{fontFamily: ''}, this.props.style],
+      };
+    }
     if (this.context.isInAParentText) {
       return <RCTVirtualText {...newProps} />;
     } else {

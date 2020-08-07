@@ -912,6 +912,19 @@ const TextInput = createReactClass({
     this._lastNativeSelection = event.nativeEvent.selection;
 
     if (this.props.selection || this.props.selectionState) {
+      let text = this._getText();
+      let { start, end } = this.props.selection;
+
+      if ((start > text.length) || (start < 0)) {
+        return;
+      }
+      if ((end > text.length) || (end < 0)) {
+        return;
+      }
+      if (start > end) {
+        return;
+      }
+
       this.forceUpdate();
     }
   },
